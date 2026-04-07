@@ -1,7 +1,6 @@
 # GOLL GYM — Website
 
-Single-page gym website for **GOLL GYM**, Kyiv, Ukraine. Built with a **Kinetic Brutalism** design system: dark, sharp-edged, high-contrast editorial aesthetic. No build step — one HTML file.
-
+Single-page gym website for **GOLL GYM**. Built with a **Kinetic Brutalism** design system: dark, sharp-edged, high-contrast editorial aesthetic. 
 ## Tech Stack
 
 | Layer | Tool |
