@@ -1,0 +1,238 @@
+<!DOCTYPE html><html class="dark" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>GOLL GYM | KINETIC BRUTALISM</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error-container": "#93000a",
+                    "inverse-on-surface": "#303030",
+                    "tertiary-fixed-dim": "#acc7ff",
+                    "background": "#131313",
+                    "secondary-fixed": "#e5e2e1",
+                    "surface-tint": "#ffb4a8",
+                    "surface-bright": "#393939",
+                    "on-primary-container": "#5c0000",
+                    "surface-container": "#1f1f1f",
+                    "surface": "#131313",
+                    "primary-fixed": "#ffdad4",
+                    "on-error": "#690005",
+                    "surface-container-lowest": "#0e0e0e",
+                    "on-background": "#e2e2e2",
+                    "secondary-container": "#474746",
+                    "on-surface-variant": "#ebbbb4",
+                    "on-surface": "#e2e2e2",
+                    "surface-container-highest": "#353535",
+                    "primary": "#ffb4a8",
+                    "secondary-fixed-dim": "#c8c6c5",
+                    "on-tertiary-container": "#00285b",
+                    "tertiary-fixed": "#d7e2ff",
+                    "on-secondary-fixed": "#1c1b1b",
+                    "surface-dim": "#131313",
+                    "secondary": "#c8c6c5",
+                    "on-primary-fixed": "#410000",
+                    "on-secondary-container": "#b7b5b4",
+                    "primary-container": "#ff5540",
+                    "error": "#ffb4ab",
+                    "on-primary-fixed-variant": "#930100",
+                    "primary-fixed-dim": "#ffb4a8",
+                    "surface-variant": "#353535",
+                    "on-primary": "#690100",
+                    "surface-container-high": "#2a2a2a",
+                    "tertiary-container": "#488fff",
+                    "on-secondary": "#313030",
+                    "outline": "#b18780",
+                    "on-tertiary": "#002f67",
+                    "on-error-container": "#ffdad6",
+                    "surface-container-low": "#1b1b1b",
+                    "on-tertiary-fixed": "#001a40",
+                    "on-tertiary-fixed-variant": "#004491",
+                    "on-secondary-fixed-variant": "#474746",
+                    "tertiary": "#acc7ff",
+                    "outline-variant": "#603e39",
+                    "inverse-primary": "#c00100",
+                    "inverse-surface": "#e2e2e2"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0px",
+                    "lg": "0px",
+                    "xl": "0px",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Space Grotesk"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .text-bleed {
+            letter-spacing: -0.05em;
+        }
+        .kinetic-gradient {
+            background: linear-gradient(135deg, #ffb4a8 0%, #ff5540 100%);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-[#131313]/60 backdrop-blur-xl">
+<div class="flex justify-between items-center px-12 py-6 max-w-[1920px] mx-auto">
+<div class="text-2xl font-black italic tracking-tighter text-[#FFB4A8] font-['Space_Grotesk'] uppercase" style="">
+                GOLL GYM
+            </div>
+<div class="hidden md:flex items-center space-x-12">
+<a class="font-['Space_Grotesk'] uppercase tracking-tight text-[#FFB4A8] border-b-2 border-[#FF5540] pb-1 cursor-pointer active:scale-95 transition-transform duration-300" href="#" style="">Home</a>
+<a class="font-['Space_Grotesk'] uppercase tracking-tight text-white/70 hover:text-white hover:scale-105 transition-transform duration-300 cursor-pointer active:scale-95" href="#" style="">Classes</a>
+<a class="font-['Space_Grotesk'] uppercase tracking-tight text-white/70 hover:text-white hover:scale-105 transition-transform duration-300 cursor-pointer active:scale-95" href="#" style="">Team</a>
+<a class="font-['Space_Grotesk'] uppercase tracking-tight text-white/70 hover:text-white hover:scale-105 transition-transform duration-300 cursor-pointer active:scale-95" href="#" style="">Pricing</a>
+</div>
+<button class="bg-[#ff5540] text-[#5c0000] px-8 py-3 font-bold tracking-widest hover:bg-[#ffb4a8] transition-all duration-300 cursor-pointer active:scale-95" style="">
+                JOIN NOW
+            </button>
+</div>
+</nav>
+<main>
+<!-- Hero Section -->
+<section class="relative h-screen flex items-center justify-start overflow-hidden px-12">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover grayscale opacity-40" data-alt="high contrast black and white photo of a gritty underground gym with red neon lights reflecting on wet concrete floor" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDIYY-K7CiXlW-jYQ9Bq1rPeHlRoMG5cwVZFQTr140fNDRpForM2QtpjesWO6khFBeMJPIAhTCA1HEG8gz6yMdEDKejtcfYo5Um88WM05uGnNFzuCfFq7jT7WUY80FPoVDL36C_rdszFns80P8pJUVHe0GD4W11taKv45Q9bH7H0jJv9elSYKKlaL2giWLYHlH0tXKEmFP0DPGtAEtaycV8AfdH9JsE4vNtP2rsifjc_p-VRdjG1yhY8NTahvNeanmzX6sWAeeByg" style="">
+<div class="absolute inset-0 bg-gradient-to-r from-background via-transparent to-transparent"></div>
+</div>
+<div class="relative z-10 max-w-5xl">
+<p class="font-headline font-bold text-primary tracking-[0.3em] uppercase mb-6 animate-pulse" style="">ESTABLISHED IN POWER</p>
+<h1 class="font-headline text-[clamp(4rem,10vw,8rem)] leading-[0.85] font-black italic tracking-tighter text-white uppercase mb-8 text-bleed" style="">
+                    JOIN THE <br>
+<span class="text-primary-container" style="">REVOLUTION</span>
+</h1>
+<div class="flex flex-col md:flex-row gap-6 mt-12">
+<button class="kinetic-gradient text-on-primary-container px-12 py-5 font-black text-xl uppercase tracking-tighter hover:scale-105 transition-transform" style="">
+                        Start Training
+                    </button>
+<button class="border-2 border-outline-variant/30 text-white px-12 py-5 font-black text-xl uppercase tracking-tighter hover:bg-white hover:text-black transition-all" style="">
+                        View Schedule
+                    </button>
+</div>
+</div>
+<!-- Floating Metric -->
+<div class="absolute bottom-12 right-12 hidden lg:block bg-surface-container/80 backdrop-blur-md p-8 border-l-4 border-primary">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary text-4xl" data-weight="fill" style="">bolt</span>
+<div>
+<p class="font-headline text-4xl font-black text-white" style="">450+</p>
+<p class="font-label text-primary uppercase tracking-widest text-xs" style="">Active Warriors</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Tonal Shift: Programs Overview -->
+<section class="bg-surface-container-low py-32 px-12">
+<div class="max-w-[1920px] mx-auto">
+<div class="flex flex-col md:flex-row justify-between items-end mb-24 gap-8">
+<div class="max-w-2xl">
+<h2 class="font-headline text-6xl font-black uppercase text-white mb-6" style="">Our Programs</h2>
+<p class="text-on-surface-variant text-xl leading-relaxed" style="">We don't do workouts. We build machines. Choose your path to total physical dominance through our surgically designed training modalities.</p>
+</div>
+<div class="font-headline text-9xl font-black text-white/5 select-none pointer-events-none hidden xl:block" style="">
+                        LEVEL UP
+                    </div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-1">
+<!-- Program 1 -->
+<div class="group relative aspect-[3/4] overflow-hidden bg-surface-container-highest cursor-pointer">
+<img class="w-full h-full object-cover grayscale group-hover:scale-110 transition-transform duration-700 opacity-60" data-alt="muscular athlete performing a heavy barbell back squat in a dark industrial gym setting with dramatic lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgT4OpqMn-gXgRAb7ep4wpO-E4V-M4eSkzlaX3TtIdICb3Yi_bWa32k4tHO3JYRCbhhLHs8kaEOgAGL0JcPdMEMegW6ism7S5DGVWNI4Y3spbhs3wdqftmMe33rdt-vSgzw8pjJ4dbZgDOoktqMO--p4GWjSqCYkHP9SKTJOgWbacOLHaRCy1JS3sMdc-z4w2xfY_0mZ31FzjtSMjWnLA6whia4nOa8KbcA668tlmo8-UcaPbgNqe5IN2rMBy8gFb5axS-xpuON8I" style="">
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-90"></div>
+<div class="absolute bottom-0 left-0 p-10">
+<h3 class="font-headline text-4xl font-bold text-white uppercase mb-2" style="">Powerlifting</h3>
+<p class="text-primary font-bold uppercase tracking-widest text-sm mb-4" style="">Strength Core</p>
+<div class="h-1 w-0 group-hover:w-full bg-primary transition-all duration-500"></div>
+</div>
+</div>
+<!-- Program 2 -->
+<div class="group relative aspect-[3/4] overflow-hidden bg-surface-container-highest cursor-pointer">
+<img class="w-full h-full object-cover grayscale group-hover:scale-110 transition-transform duration-700 opacity-60" data-alt="athlete punching a heavy boxing bag with dust particles catching red overhead lights in a gritty gym environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcAYDuN9jkOeXuf2HT1of0h1IV3UIKKW5m6RKTVC0rr6ypgiN7G_5pGIHnb04xzGwQu5P4glcNOsXGZ0XPyjdPB0MxIYNKpaFyaQEmsRINT4Q9-FBGruHjZ2MDYLp_eJ3MTLKOVJ268ysyktjuebca_XFEeIW70sl4z6V7ktyDSDoJeEPPMhpNxOM5fYcijpuGkiBkPrK8eyzvOgT3aW8-Vi8cw_kf5Q5WkmQbYodj_udUk3v7Xxn0wTsIEgMmvNyJt7LPpkFyh5g" style="">
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-90"></div>
+<div class="absolute bottom-0 left-0 p-10">
+<h3 class="font-headline text-4xl font-bold text-white uppercase mb-2" style="">Hybrid Combat</h3>
+<p class="text-primary font-bold uppercase tracking-widest text-sm mb-4" style="">Endurance &amp; Agility</p>
+<div class="h-1 w-0 group-hover:w-full bg-primary transition-all duration-500"></div>
+</div>
+</div>
+<!-- Program 3 -->
+<div class="group relative aspect-[3/4] overflow-hidden bg-surface-container-highest cursor-pointer">
+<img class="w-full h-full object-cover grayscale group-hover:scale-110 transition-transform duration-700 opacity-60" data-alt="close up of kettlebell being swung with magnesium chalk dust in the air and dramatic side lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC27SB0tQoKJpOwBMlT5DcE76BI0XNIgWIO3V4Kk80XEsbByDa1nBXX2M4IcPOzRgdTws4YhEZv1BCFM6xrPlTSZYKZQy4nbx5TPx-mloEd18FlI7piibPdgpuPpjYGSEzpUWT84m_2LfMVacYQGowqLAqbifOH_Zoqs8phwbmSz9K9cn91_oWqndYe5HF99zXqcCq-wWUg2MvgPq4FuK6DqPQucQ0DBuRfEYQQ7mKf33LpvGZM8Lu_KMdpM6ec3cfrtcDYxWyKAqA" style="">
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-90"></div>
+<div class="absolute bottom-0 left-0 p-10">
+<h3 class="font-headline text-4xl font-bold text-white uppercase mb-2" style="">Engine Room</h3>
+<p class="text-primary font-bold uppercase tracking-widest text-sm mb-4" style="">High Intensity Meta</p>
+<div class="h-1 w-0 group-hover:w-full bg-primary transition-all duration-500"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Stats Section -->
+<section class="bg-background py-32 px-12 border-y border-surface-container-highest">
+<div class="max-w-[1920px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-16">
+<div class="flex flex-col">
+<span class="font-headline text-8xl font-black text-primary-container mb-2" style="">24</span>
+<span class="font-label uppercase tracking-[0.4em] text-white/50 text-xs" style="">Hours Access</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline text-8xl font-black text-white mb-2" style="">15</span>
+<span class="font-label uppercase tracking-[0.4em] text-white/50 text-xs" style="">Pro Coaches</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline text-8xl font-black text-primary-container mb-2" style="">50</span>
+<span class="font-label uppercase tracking-[0.4em] text-white/50 text-xs" style="">Weekly Classes</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline text-8xl font-black text-white mb-2" style="">0</span>
+<span class="font-label uppercase tracking-[0.4em] text-white/50 text-xs" style="">Excuses Allowed</span>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="relative bg-surface-container-lowest py-48 px-12 overflow-hidden">
+<div class="absolute top-0 right-0 h-full w-1/3 kinetic-gradient skew-x-12 translate-x-1/2 opacity-20"></div>
+<div class="max-w-4xl mx-auto text-center relative z-10">
+<h2 class="font-headline text-7xl md:text-9xl font-black uppercase italic text-white mb-12 tracking-tighter" style="">
+                    STOP <br> WAITING.
+                </h2>
+<p class="font-body text-xl text-on-surface-variant mb-16 max-w-xl mx-auto" style="">Your journey to peak performance starts with a single decision. Join the elite community at GOLL GYM today.</p>
+<div class="flex flex-col md:flex-row justify-center gap-8">
+<button class="bg-white text-black px-16 py-6 font-black text-2xl uppercase tracking-tighter hover:bg-primary-container hover:text-white transition-all" style="">
+                        Get A FIRST FREE TRAINING</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-[#0E0E0E] w-full border-t border-[#353535]/15">
+<div class="flex flex-col md:flex-row justify-between items-center px-12 py-16 w-full max-w-[1920px] mx-auto">
+<div class="flex flex-col mb-8 md:mb-0">
+<div class="text-lg font-bold text-white uppercase mb-4 font-headline tracking-tighter" style="">GOLL GYM</div>
+<p class="font-['Space_Grotesk'] font-light text-xs tracking-widest text-white/40 uppercase" style="">© 2024 GOLL GYM. KINETIC BRUTALISM.</p>
+</div>
+<div class="flex space-x-12">
+<a class="font-['Space_Grotesk'] font-light text-xs tracking-widest text-white/40 hover:text-[#FF5540] transition-colors ease-in-out duration-200 uppercase" href="#" style="">Instagram</a>
+<a class="font-['Space_Grotesk'] font-light text-xs tracking-widest text-white/40 hover:text-[#FF5540] transition-colors ease-in-out duration-200 uppercase" href="#" style="">Twitter</a>
+<a class="font-['Space_Grotesk'] font-light text-xs tracking-widest text-white/40 hover:text-[#FF5540] transition-colors ease-in-out duration-200 uppercase" href="#" style="">LinkedIn</a>
+<a class="font-['Space_Grotesk'] font-light text-xs tracking-widest text-white/40 hover:text-[#FF5540] transition-colors ease-in-out duration-200 uppercase" href="#" style="">Contact</a>
+</div>
+</div>
+</footer>
+</body></html>

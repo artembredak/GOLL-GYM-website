@@ -1,0 +1,1644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GOLL GYM | KINETIC BRUTALISM</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'surface': '#131313',
+        'surface-container-lowest': '#0E0E0E',
+        'surface-container-low': '#1B1B1B',
+        'surface-container': '#1F1F1F',
+        'surface-container-high': '#2A2A2A',
+        'surface-container-highest': '#353535',
+        'on-surface': '#E2E2E2',
+        'on-surface-variant': '#EBBBB4',
+        'background': '#131313',
+        'primary': '#FFB4A8',
+        'primary-container': '#FF5540',
+        'on-primary-container': '#5C0000',
+        'outline-variant': '#603E39',
+      },
+      borderRadius: {
+        'DEFAULT': '0px', 'sm': '0px', 'md': '0px', 'lg': '0px',
+        'xl': '0px', '2xl': '0px', '3xl': '0px', 'full': '9999px',
+      },
+      fontFamily: {
+        'headline': ['Space Grotesk', 'sans-serif'],
+        'body': ['Inter', 'sans-serif'],
+      },
+    }
+  }
+}
+</script>
+<style>
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:#131313;color:#E2E2E2;font-family:'Inter',sans-serif;overflow-x:hidden;}
+
+/* ── Utilities ── */
+.font-headline{font-family:'Space Grotesk',sans-serif;}
+.kinetic-gradient{background:linear-gradient(135deg,#FFB4A8 0%,#FF5540 100%);}
+.kinetic-text{background:linear-gradient(135deg,#FFB4A8 0%,#FF5540 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.section-label{font-family:'Space Grotesk',sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:0.4em;text-transform:uppercase;color:#FF5540;}
+.accent-line{width:60px;height:3px;background:linear-gradient(135deg,#FFB4A8 0%,#FF5540 100%);}
+
+/* ── Loading ── */
+#loading{position:fixed;inset:0;background:#0E0E0E;z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;}
+.load-bar{width:220px;height:2px;background:#252525;position:relative;overflow:hidden;margin-top:2rem;}
+.load-fill{position:absolute;height:100%;background:linear-gradient(90deg,#FFB4A8,#FF5540);width:0%;transition:width 0.08s linear;}
+
+/* ── Nav ── */
+#navbar{transition:background 0.3s ease;}
+.nav-link{font-family:'Space Grotesk',sans-serif;font-size:0.8rem;font-weight:600;text-transform:uppercase;letter-spacing:0.15em;color:rgba(255,255,255,0.55);transition:color 0.3s ease;position:relative;padding-bottom:2px;}
+.nav-link::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:#FF5540;transition:width 0.35s cubic-bezier(0.25,0.46,0.45,0.94);}
+.nav-link:hover{color:#fff;}
+.nav-link:hover::after{width:100%;}
+.nav-link.active{color:#fff;}
+.nav-link.active::after{width:100%;}
+
+/* ── Cursor glow ── */
+#glow{pointer-events:none;position:fixed;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(255,85,64,0.07) 0%,transparent 70%);transform:translate(-50%,-50%);z-index:0;transition:left 0.12s ease,top 0.12s ease;}
+
+/* ── Buttons ── */
+.btn-primary{background:linear-gradient(135deg,#FFB4A8 0%,#FF5540 100%);color:#5C0000;font-family:'Space Grotesk',sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:0.12em;border:none;cursor:pointer;position:relative;overflow:hidden;transition:transform 0.2s ease,box-shadow 0.3s ease;}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 10px 40px rgba(255,85,64,0.45);}
+.btn-primary:active{transform:scale(0.97);}
+.btn-secondary{background:transparent;color:#E2E2E2;font-family:'Space Grotesk',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;border:2px solid rgba(96,62,57,0.5);cursor:pointer;transition:all 0.3s ease;}
+.btn-secondary:hover{border-color:#FFB4A8;color:#FFB4A8;background:rgba(96,62,57,0.15);}
+
+/* ── Marquee ── */
+.marquee-wrap{overflow:hidden;white-space:nowrap;}
+.marquee-track{display:inline-flex;animation:marquee 22s linear infinite;}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ── Program cards ── */
+.prog-card{position:relative;overflow:hidden;cursor:pointer;aspect-ratio:3/4;}
+.prog-card img{width:100%;height:100%;object-fit:cover;filter:grayscale(100%);transition:transform 0.7s cubic-bezier(.25,.46,.45,.94),filter 0.5s ease;}
+.prog-card:hover img{transform:scale(1.08);filter:grayscale(20%);}
+.prog-card .prog-overlay{position:absolute;inset:0;background:linear-gradient(to top,#131313 0%,rgba(19,19,19,0.3) 60%,transparent 100%);opacity:0.92;transition:opacity 0.4s ease;}
+.prog-card:hover .prog-overlay{opacity:0.75;}
+.red-bar{height:3px;width:0;background:linear-gradient(135deg,#FFB4A8,#FF5540);transition:width 0.5s cubic-bezier(.25,.46,.45,.94);}
+.prog-card:hover .red-bar{width:100%;}
+
+/* ── Trainer cards ── */
+.trainer-card{position:relative;overflow:hidden;background:#1F1F1F;}
+.trainer-card img{width:100%;height:100%;object-fit:cover;filter:grayscale(100%);transition:filter 0.5s ease,transform 0.6s ease;}
+.trainer-card:hover img{filter:grayscale(0%);transform:scale(1.05);}
+.trainer-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(19,19,19,0.97) 0%,transparent 55%);}
+.t-socials{position:absolute;top:1rem;right:1rem;display:flex;flex-direction:column;gap:0.5rem;opacity:0;transform:translateX(16px);transition:opacity 0.35s ease,transform 0.35s ease;}
+.trainer-card:hover .t-socials{opacity:1;transform:translateX(0);}
+
+/* ── Pricing ── */
+.price-card{background:#1B1B1B;border-left:3px solid transparent;transition:border-color 0.3s ease,background 0.3s ease,transform 0.35s ease;}
+.price-card:hover{border-color:#FF5540;background:#1F1F1F;transform:translateY(-8px);}
+.price-card.feat{background:#1F1F1F;border-color:#FF5540;}
+
+/* ── Schedule ── */
+.sch-row{border-bottom:1px solid rgba(53,53,53,0.4);transition:background 0.2s ease;}
+.sch-row:hover{background:rgba(31,31,31,0.8);}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.5;transform:scale(1.4);}}
+
+/* ── Scroll indicator ── */
+.scroll-ind{animation:scrollBounce 2s ease-in-out infinite;}
+@keyframes scrollBounce{0%,100%{transform:translateY(0);opacity:1;}50%{transform:translateY(12px);opacity:0.3;}}
+
+/* ── Video frame corners ── */
+.corner-tr{position:absolute;top:-8px;right:-8px;width:55%;height:55%;border-top:3px solid #FF5540;border-right:3px solid #FF5540;pointer-events:none;z-index:2;}
+.corner-bl{position:absolute;bottom:-8px;left:-8px;width:38%;height:38%;border-bottom:3px solid rgba(255,85,64,0.35);border-left:3px solid rgba(255,85,64,0.35);pointer-events:none;z-index:2;}
+
+/* ── Grid overlay ── */
+.grid-bg{background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:80px 80px;}
+
+/* ── Plan summary swap animation ── */
+@keyframes planFadeIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.plan-animating{animation:planFadeIn 0.3s cubic-bezier(0.25,0.46,0.45,0.94) forwards;}
+
+/* ── Modal responsive ── */
+@media(max-width:640px){
+  #modalPanel{grid-template-columns:1fr !important;}
+  #planSummary{border-left:none !important;border-top:4px solid #FF5540;}
+}
+
+/* ── Reduced motion ── */
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms !important;transition-duration:0.01ms !important;}}
+</style>
+</head>
+<body class="dark">
+
+<!-- Cursor glow -->
+<div id="glow"></div>
+
+<!-- ═══ JOIN MODAL ═══ -->
+<div id="joinModal" style="position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:1rem;overflow-y:auto;">
+  <!-- Scrim -->
+  <div id="modalScrim" onclick="closeModal()" style="position:fixed;inset:0;background:rgba(0,0,0,0);backdrop-filter:blur(0px);-webkit-backdrop-filter:blur(0px);"></div>
+  <!-- Panel: two-column on desktop -->
+  <div id="modalPanel" style="position:relative;z-index:1;width:100%;max-width:860px;display:grid;grid-template-columns:1fr 1fr;background:#131313;opacity:0;transform:translateY(40px);margin:auto;">
+
+    <!-- LEFT: Plan summary (dynamic) -->
+    <div id="planSummary" style="background:#1B1B1B;padding:2.5rem;border-left:4px solid #FF5540;display:flex;flex-direction:column;justify-content:space-between;">
+      <div>
+        <div class="section-label mb-3" id="planLabel">Starter</div>
+        <div id="planName" class="font-headline font-black uppercase text-white mb-1" style="font-size:2.2rem;letter-spacing:-0.04em;line-height:0.9;">WARRIOR</div>
+        <div id="planPrice" class="font-headline font-black mt-3 mb-6" style="font-size:3.5rem;letter-spacing:-0.04em;line-height:1;background:linear-gradient(135deg,#FFB4A8,#FF5540);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">$49<span class="font-body text-white/30 text-base" style="-webkit-text-fill-color:rgba(255,255,255,0.3);font-size:0.9rem;">/mo</span></div>
+        <div id="planPerks" class="flex flex-col gap-3">
+          <!-- filled by JS -->
+        </div>
+      </div>
+      <!-- Plan picker tabs -->
+      <div class="flex flex-col gap-2 mt-8" id="planPicker">
+        <button type="button" class="plan-btn font-headline font-bold text-xs uppercase tracking-widest px-4 py-2.5 cursor-pointer text-left" data-plan="Warrior"
+          style="background:#FF5540;color:#5C0000;border:none;">Warrior — $49/mo</button>
+        <button type="button" class="plan-btn font-headline font-bold text-xs uppercase tracking-widest px-4 py-2.5 cursor-pointer text-left" data-plan="Champion"
+          style="background:#1F1F1F;color:rgba(255,255,255,0.5);border:2px solid #353535;">Champion — $99/mo</button>
+        <button type="button" class="plan-btn font-headline font-bold text-xs uppercase tracking-widest px-4 py-2.5 cursor-pointer text-left" data-plan="Legend"
+          style="background:#1F1F1F;color:rgba(255,255,255,0.5);border:2px solid #353535;">Legend — $199/mo</button>
+      </div>
+    </div>
+
+    <!-- RIGHT: Form -->
+    <div style="padding:2.5rem;position:relative;">
+      <!-- Close -->
+      <button onclick="closeModal()" style="position:absolute;top:1.25rem;right:1.25rem;background:transparent;border:none;cursor:pointer;color:rgba(255,255,255,0.35);font-size:1.2rem;line-height:1;transition:color 0.2s;" onmouseover="this.style.color='#FF5540'" onmouseout="this.style.color='rgba(255,255,255,0.35)'">✕</button>
+
+      <div class="section-label mb-2">Start Today</div>
+      <h2 class="font-headline font-black uppercase text-white mb-1" style="font-size:1.7rem;letter-spacing:-0.04em;line-height:0.95;">CLAIM YOUR<br><span class="kinetic-text">FREE SESSION</span></h2>
+      <p class="font-body text-white/35 text-xs mt-3 mb-6 leading-relaxed">Fill in your details. Our team will contact you within 24 hours to book your first session — on us.</p>
+
+      <!-- Form -->
+      <form id="joinForm" onsubmit="submitJoin(event)" novalidate>
+        <input type="hidden" id="jPlan" value="Warrior">
+        <div style="margin-bottom:1.1rem;">
+          <label class="font-body text-xs uppercase tracking-widest text-white/35 block mb-1.5">Full Name *</label>
+          <input id="jName" type="text" placeholder="Your name" required
+            style="width:100%;background:#1F1F1F;color:#E2E2E2;border:none;border-bottom:2px solid #2A2A2A;padding:0.65rem 0;font-family:'Inter',sans-serif;font-size:0.9rem;outline:none;transition:border-color 0.25s;"
+            onfocus="this.style.borderBottomColor='#FF5540'" onblur="this.style.borderBottomColor='#2A2A2A'">
+          <div class="field-err font-body text-xs mt-1" style="color:#FF5540;display:none;">Required</div>
+        </div>
+        <div style="margin-bottom:1.1rem;">
+          <label class="font-body text-xs uppercase tracking-widest text-white/35 block mb-1.5">Email *</label>
+          <input id="jEmail" type="email" placeholder="your@email.com" required
+            style="width:100%;background:#1F1F1F;color:#E2E2E2;border:none;border-bottom:2px solid #2A2A2A;padding:0.65rem 0;font-family:'Inter',sans-serif;font-size:0.9rem;outline:none;transition:border-color 0.25s;"
+            onfocus="this.style.borderBottomColor='#FF5540'" onblur="this.style.borderBottomColor='#2A2A2A'">
+          <div class="field-err font-body text-xs mt-1" style="color:#FF5540;display:none;">Valid email required</div>
+        </div>
+        <div style="margin-bottom:1.8rem;">
+          <label class="font-body text-xs uppercase tracking-widest text-white/35 block mb-1.5">Phone</label>
+          <input id="jPhone" type="tel" placeholder="+380 xx xxx xxxx"
+            style="width:100%;background:#1F1F1F;color:#E2E2E2;border:none;border-bottom:2px solid #2A2A2A;padding:0.65rem 0;font-family:'Inter',sans-serif;font-size:0.9rem;outline:none;transition:border-color 0.25s;"
+            onfocus="this.style.borderBottomColor='#FF5540'" onblur="this.style.borderBottomColor='#2A2A2A'">
+        </div>
+        <button type="submit" class="btn-primary w-full py-4 text-sm" id="joinSubmitBtn">CLAIM FREE SESSION</button>
+        <p class="font-body text-white/25 text-xs text-center mt-3">No contract. Cancel anytime.</p>
+      </form>
+
+      <!-- Success -->
+      <div id="joinSuccess" style="display:none;text-align:center;padding:2rem 0;">
+        <div style="width:52px;height:52px;background:linear-gradient(135deg,#FFB4A8,#FF5540);display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5C0000" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h3 class="font-headline font-black uppercase text-white text-2xl mb-3" style="letter-spacing:-0.03em;">YOU'RE IN.</h3>
+        <p class="font-body text-white/45 text-sm leading-relaxed">We'll call you within 24 hours to schedule your free session. Get ready to transform.</p>
+        <button onclick="closeModal()" class="btn-secondary mt-6 px-8 py-3 text-xs">CLOSE</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ LOADING ═══ -->
+<div id="loading">
+  <div class="font-headline text-5xl font-black tracking-tight text-white uppercase" style="letter-spacing:-0.04em;">GOLL<span style="color:#FF5540">.</span></div>
+  <div class="load-bar"><div class="load-fill" id="loadFill"></div></div>
+  <div class="font-headline text-xs tracking-[0.4em] uppercase mt-4" style="color:rgba(255,255,255,0.25);" id="loadTxt">INITIALIZING</div>
+</div>
+
+<!-- ═══ NAV ═══ -->
+<nav id="navbar" class="fixed top-0 w-full z-50" style="background:rgba(13,13,13,0.65);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);">
+  <div class="flex justify-between items-center px-8 md:px-12 py-5 max-w-screen-2xl mx-auto">
+    <a href="#" class="font-headline text-2xl font-black italic tracking-tight text-white uppercase" style="letter-spacing:-0.04em;">GOLL<span style="color:#FF5540;">.</span>GYM</a>
+    <div class="hidden lg:flex items-center gap-10">
+      <a href="#programs" class="nav-link">Programs</a>
+      <a href="#trainers" class="nav-link">Team</a>
+      <a href="#schedule" class="nav-link">Schedule</a>
+      <a href="#pricing" class="nav-link">Pricing</a>
+    </div>
+    <div class="flex items-center gap-4">
+      <button class="btn-primary text-sm px-6 py-3 hidden md:block" onclick="openModal()">JOIN NOW</button>
+      <button id="mBtn" class="lg:hidden p-2 flex flex-col gap-1.5 cursor-pointer" aria-label="menu">
+        <span class="mline w-6 h-0.5 bg-white block transition-all duration-300"></span>
+        <span class="mline w-6 h-0.5 bg-white block transition-all duration-300"></span>
+        <span class="mline w-6 h-0.5 bg-white block transition-all duration-300"></span>
+      </button>
+    </div>
+  </div>
+  <div id="mMenu" class="lg:hidden overflow-hidden transition-all duration-500" style="max-height:0;background:rgba(14,14,14,0.98);">
+    <div class="px-8 py-6 flex flex-col gap-5">
+      <a href="#programs" class="font-headline uppercase tracking-widest text-white/60 hover:text-white text-lg" onclick="closeMMenu()">Programs</a>
+      <a href="#trainers" class="font-headline uppercase tracking-widest text-white/60 hover:text-white text-lg" onclick="closeMMenu()">Team</a>
+      <a href="#schedule" class="font-headline uppercase tracking-widest text-white/60 hover:text-white text-lg" onclick="closeMMenu()">Schedule</a>
+      <a href="#pricing" class="font-headline uppercase tracking-widest text-white/60 hover:text-white text-lg" onclick="closeMMenu()">Pricing</a>
+      <button class="btn-primary w-full py-4 mt-2" onclick="closeMMenu();openModal()">JOIN NOW</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero" class="relative min-h-screen flex items-center overflow-hidden grid-bg" style="background:#0E0E0E;">
+  <!-- Ambient red glow -->
+  <div class="absolute pointer-events-none" style="top:50%;right:30%;transform:translateY(-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(255,85,64,0.18) 0%,transparent 65%);filter:blur(80px);"></div>
+
+  <div class="relative z-10 w-full max-w-screen-2xl mx-auto px-8 md:px-12 pt-28 pb-16">
+    <div class="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-8">
+
+      <!-- LEFT: Copy -->
+      <div class="flex-1 max-w-3xl">
+        <div class="section-label mb-6 hero-el" style="opacity:0;transform:translateY(20px);">▪ ESTABLISHED IN POWER ▪ KYIV, UKRAINE</div>
+
+        <h1 class="font-headline font-black uppercase text-white hero-h1"
+          style="font-size:clamp(4rem,9vw,8.5rem);letter-spacing:-0.045em;line-height:0.88;opacity:0;transform:translateY(80px);">
+          JOIN<br>THE<br><span class="kinetic-text">REVO&shy;LU&shy;TION</span>
+        </h1>
+
+        <p class="font-body text-white/45 text-lg max-w-lg mt-8 leading-relaxed hero-el" style="opacity:0;transform:translateY(20px);">
+          Not a wellness center. Not a fitness club. A machine for building extraordinary humans. GOLL GYM is where limits become history.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4 mt-12 hero-el" style="opacity:0;transform:translateY(20px);">
+          <button class="btn-primary text-lg px-10 py-5" onclick="openModal()">START TRAINING</button>
+          <button class="btn-secondary text-lg px-10 py-5" onclick="goTo('programs')">VIEW PROGRAMS</button>
+        </div>
+
+        <div class="flex items-center gap-5 mt-10 hero-el" style="opacity:0;transform:translateY(20px);">
+          <div class="flex -space-x-3">
+            <div class="w-9 h-9 flex items-center justify-center text-xs font-black font-headline" style="background:#2A2A2A;color:#FFB4A8;border:2px solid #0E0E0E;">AR</div>
+            <div class="w-9 h-9 flex items-center justify-center text-xs font-black font-headline" style="background:#353535;color:#FFB4A8;border:2px solid #0E0E0E;">MK</div>
+            <div class="w-9 h-9 flex items-center justify-center text-xs font-black font-headline" style="background:#2A2A2A;color:#FFB4A8;border:2px solid #0E0E0E;">VS</div>
+            <div class="w-9 h-9 flex items-center justify-center text-xs font-black font-headline kinetic-gradient" style="border:2px solid #0E0E0E;color:#5C0000;">+</div>
+          </div>
+          <div>
+            <div class="font-headline font-bold text-white text-sm">450+ Warriors Active</div>
+            <div class="font-body text-xs text-white/35 uppercase tracking-widest">and growing daily</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Video -->
+      <div class="relative flex-shrink-0 hero-vid" style="width:min(500px,90vw);opacity:0;transform:translateX(60px);">
+        <div class="corner-tr"></div>
+        <div class="corner-bl"></div>
+        <!-- Red ambient behind video -->
+        <div style="position:absolute;inset:-40px;background:radial-gradient(ellipse,rgba(255,85,64,0.22) 0%,transparent 70%);filter:blur(40px);pointer-events:none;"></div>
+        <video id="scrollVideo" muted playsinline preload="auto" style="width:100%;display:block;mix-blend-mode:lighten;position:relative;z-index:1;">
+          <source src="hf_20260405_195526_07959be4-41e6-4657-a36d-ae8905a6b048.mp4" type="video/mp4">
+        </video>
+        <div style="position:absolute;bottom:0;left:0;right:0;height:35%;background:linear-gradient(to top,#0E0E0E,transparent);pointer-events:none;z-index:2;"></div>
+        <!-- Floating stat -->
+        <div class="absolute hidden lg:block" style="left:-70px;bottom:25%;background:#1F1F1F;border-left:4px solid #FF5540;padding:1.25rem 1.5rem;z-index:3;">
+          <div class="font-headline font-black text-white text-3xl">24/7</div>
+          <div class="font-body text-xs text-white/35 uppercase tracking-widest mt-1">Always Open</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="scroll-ind absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+    <div class="font-body text-xs tracking-[0.4em] uppercase text-white/25">Scroll</div>
+    <svg width="16" height="24" viewBox="0 0 16 24" fill="none">
+      <rect x="1" y="1" width="14" height="22" rx="7" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+      <rect x="7" y="4" width="2" height="6" rx="1" fill="#FF5540">
+        <animate attributeName="y" values="4;13;4" dur="2s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="1;0;1" dur="2s" repeatCount="indefinite"/>
+      </rect>
+    </svg>
+  </div>
+</section>
+
+<!-- ═══ MARQUEE ═══ -->
+<div class="marquee-wrap py-5" style="background:#FF5540;">
+  <div class="marquee-track">
+    <span class="font-headline font-black uppercase text-sm px-10" style="color:#5C0000;opacity:0.9;">◆ POWERLIFTING</span>
+    <span class="font-headline font-black uppercase text-sm px-10" style="color:#5C0000;opacity:0.6;">◆ HYBRID COMBAT</span>
+    <span class="font-headline font-black uppercase text-sm px-10" style="color:#5C0000;opacity:0.9;">◆ HIGH INTENSITY</span>
+    <span class="font-headline font-black uppercase text-sm px-10" style="color:#5C0000;opacity:0.6;">◆ GOLL GYM</span>
+    <span class="font-headline font-black uppercase text-sm px-10" style="color:#5C0000;opacity:0.9;">◆ NO EXCUSES</span>
+    <span class="font-headline font-black uppercase text-sm px-10" style="color:#5C0000;opacity:0.6;">◆ LEVEL UP</span>
+    <span class="font-headline font-black uppercase text-sm px-10" style="color:#5C0000;opacity:0.9;">◆ POWERLIFTING</span>
+    <span class="font-headline font-black uppercase text-sm px-10" style="color:#5C0000;opacity:0.6;">◆ HYBRID COMBAT</span>
+    <span class="font-headline font-black uppercase text-sm px-10" style="color:#5C0000;opacity:0.9;">◆ HIGH INTENSITY</span>
+    <span class="font-headline font-black uppercase text-sm px-10" style="color:#5C0000;opacity:0.6;">◆ GOLL GYM</span>
+    <span class="font-headline font-black uppercase text-sm px-10" style="color:#5C0000;opacity:0.9;">◆ NO EXCUSES</span>
+    <span class="font-headline font-black uppercase text-sm px-10" style="color:#5C0000;opacity:0.6;">◆ LEVEL UP</span>
+  </div>
+</div>
+
+<!-- ═══ STATS ═══ -->
+<section class="py-24 px-8 md:px-12" style="background:#1B1B1B;">
+  <div class="max-w-screen-2xl mx-auto">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-0 items-center">
+
+      <div class="flex flex-col items-start md:items-center stat-el">
+        <div class="flex items-end gap-1">
+          <span class="font-headline font-black text-white counter" data-target="450" style="font-size:clamp(3.5rem,7vw,6rem);letter-spacing:-0.04em;line-height:1;">0</span>
+          <span class="font-headline font-black mb-2" style="font-size:clamp(2rem,4vw,3.5rem);color:#FF5540;">+</span>
+        </div>
+        <div class="font-body uppercase text-white/35 text-xs tracking-[0.4em] mt-1">Active Warriors</div>
+      </div>
+
+      <div class="hidden md:block" style="width:1px;height:70px;background:linear-gradient(to bottom,transparent,#353535,transparent);margin:auto;"></div>
+
+      <div class="flex flex-col items-start md:items-center stat-el">
+        <div class="flex items-end gap-1">
+          <span class="font-headline font-black text-white counter" data-target="15" style="font-size:clamp(3.5rem,7vw,6rem);letter-spacing:-0.04em;line-height:1;">0</span>
+        </div>
+        <div class="font-body uppercase text-white/35 text-xs tracking-[0.4em] mt-1">Pro Coaches</div>
+      </div>
+
+      <div class="hidden md:block" style="width:1px;height:70px;background:linear-gradient(to bottom,transparent,#353535,transparent);margin:auto;"></div>
+
+      <div class="flex flex-col items-start md:items-center stat-el">
+        <div class="font-headline font-black kinetic-text counter" data-target="50" style="font-size:clamp(3.5rem,7vw,6rem);letter-spacing:-0.04em;line-height:1;">0</div>
+        <div class="font-body uppercase text-white/35 text-xs tracking-[0.4em] mt-1">Weekly Classes</div>
+      </div>
+
+      <div class="hidden md:block" style="width:1px;height:70px;background:linear-gradient(to bottom,transparent,#353535,transparent);margin:auto;"></div>
+
+      <div class="flex flex-col items-start md:items-center stat-el">
+        <div class="flex items-end gap-1">
+          <span class="font-headline font-black text-white counter" data-target="24" style="font-size:clamp(3.5rem,7vw,6rem);letter-spacing:-0.04em;line-height:1;">0</span>
+          <span class="font-headline font-black text-white/20 mb-2" style="font-size:clamp(2rem,4vw,3.5rem);">/7</span>
+        </div>
+        <div class="font-body uppercase text-white/35 text-xs tracking-[0.4em] mt-1">Hours Access</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PROGRAMS ═══ -->
+<section id="programs" class="py-32 px-8 md:px-12" style="background:#131313;">
+  <div class="max-w-screen-2xl mx-auto">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-20 gap-8">
+      <div class="gsap-reveal-left">
+        <div class="section-label mb-4">02 — Training Programs</div>
+        <h2 class="font-headline font-black uppercase text-white" style="font-size:clamp(3rem,6vw,5.5rem);letter-spacing:-0.04em;line-height:0.88;">CHOOSE<br>YOUR<br>PATH</h2>
+      </div>
+      <div class="max-w-sm gsap-reveal-right">
+        <div class="accent-line mb-4"></div>
+        <p class="font-body text-white/45 text-lg leading-relaxed">We don't do workouts. We build machines. Choose your path to total physical dominance through our surgically designed training modalities.</p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-1">
+
+      <div class="prog-card gsap-reveal-up">
+        <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=900&q=80" alt="Powerlifting">
+        <div class="prog-overlay"></div>
+        <div class="absolute inset-0 flex flex-col justify-end p-8 z-10">
+          <div class="section-label mb-2">01 — Strength</div>
+          <h3 class="font-headline text-4xl font-black text-white uppercase" style="letter-spacing:-0.02em;">Powerlifting</h3>
+          <p class="font-body text-white/45 text-sm mt-2 mb-4">Build absolute strength. Dominate every lift. Zero compromise.</p>
+          <div class="red-bar"></div>
+        </div>
+      </div>
+
+      <div class="prog-card gsap-reveal-up" style="--delay:0.12s;">
+        <img src="https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=900&q=80" alt="Combat">
+        <div class="prog-overlay"></div>
+        <div class="absolute top-6 right-6 z-20 kinetic-gradient px-3 py-1">
+          <span class="font-headline font-black text-xs uppercase" style="color:#5C0000;letter-spacing:0.15em;">Popular</span>
+        </div>
+        <div class="absolute inset-0 flex flex-col justify-end p-8 z-10">
+          <div class="section-label mb-2">02 — Combat</div>
+          <h3 class="font-headline text-4xl font-black text-white uppercase" style="letter-spacing:-0.02em;">Hybrid Combat</h3>
+          <p class="font-body text-white/45 text-sm mt-2 mb-4">Agility, power, endurance. The complete fighter's physique.</p>
+          <div class="red-bar"></div>
+        </div>
+      </div>
+
+      <div class="prog-card gsap-reveal-up" style="--delay:0.24s;">
+        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=900&q=80" alt="HIIT">
+        <div class="prog-overlay"></div>
+        <div class="absolute inset-0 flex flex-col justify-end p-8 z-10">
+          <div class="section-label mb-2">03 — Endurance</div>
+          <h3 class="font-headline text-4xl font-black text-white uppercase" style="letter-spacing:-0.02em;">Engine Room</h3>
+          <p class="font-body text-white/45 text-sm mt-2 mb-4">High-intensity metabolic conditioning. Burn limits, not just calories.</p>
+          <div class="red-bar"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MANIFESTO ═══ -->
+<section class="py-36 px-8 md:px-12 relative overflow-hidden" style="background:#0E0E0E;">
+  <div class="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
+    <div class="font-headline font-black uppercase text-white parallax-bg" style="font-size:18vw;letter-spacing:-0.04em;white-space:nowrap;opacity:0.025;">NO LIMITS</div>
+  </div>
+  <div class="relative z-10 max-w-5xl mx-auto text-center">
+    <div class="section-label mb-10 gsap-reveal-up">The Goll Manifesto</div>
+    <blockquote class="font-headline font-black uppercase text-white gsap-reveal-up" style="font-size:clamp(2.5rem,5vw,5rem);letter-spacing:-0.03em;line-height:0.92;">
+      "THE BODY ACHIEVES<br>WHAT THE MIND<br><span class="kinetic-text">BELIEVES."</span>
+    </blockquote>
+    <div class="font-body uppercase tracking-[0.4em] text-white/25 text-xs mt-8 gsap-reveal-up">— GOLL GYM Philosophy</div>
+  </div>
+</section>
+
+<!-- ═══ TRAINERS ═══ -->
+<section id="trainers" class="py-32 px-8 md:px-12" style="background:#1B1B1B;">
+  <div class="max-w-screen-2xl mx-auto">
+    <div class="mb-20 gsap-reveal-up">
+      <div class="section-label mb-4">03 — The Elite</div>
+      <div class="flex flex-col md:flex-row justify-between items-end gap-8">
+        <h2 class="font-headline font-black uppercase text-white" style="font-size:clamp(3rem,6vw,5.5rem);letter-spacing:-0.04em;line-height:0.88;">MEET THE<br>COACHES</h2>
+        <p class="font-body text-white/45 text-lg max-w-xs leading-relaxed">World-class coaches. Zero tolerance for mediocrity.</p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-1">
+
+      <div class="trainer-card gsap-reveal-up">
+        <div class="aspect-[3/4] overflow-hidden"><img src="https://images.unsplash.com/photo-1567013127542-490d757e51fc?w=700&q=80" alt="Alex Rowe"></div>
+        <div class="trainer-overlay"></div>
+        <div class="t-socials">
+          <div class="w-8 h-8 flex items-center justify-center cursor-pointer transition-colors" style="background:#1F1F1F;" onmouseover="this.style.background='#FF5540'" onmouseout="this.style.background='#1F1F1F'">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </div>
+        </div>
+        <div class="absolute bottom-0 left-0 right-0 p-6 z-10">
+          <div class="section-label mb-1">Powerlifting</div>
+          <h3 class="font-headline font-bold text-white text-xl uppercase">Alex Rowe</h3>
+          <p class="font-body text-xs text-white/35 uppercase tracking-widest">Head Coach</p>
+        </div>
+      </div>
+
+      <div class="trainer-card gsap-reveal-up" style="--delay:0.1s;">
+        <div class="aspect-[3/4] overflow-hidden"><img src="https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=700&q=80" alt="Mika Kovach"></div>
+        <div class="trainer-overlay"></div>
+        <div class="t-socials">
+          <div class="w-8 h-8 flex items-center justify-center cursor-pointer" style="background:#1F1F1F;" onmouseover="this.style.background='#FF5540'" onmouseout="this.style.background='#1F1F1F'">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </div>
+        </div>
+        <div class="absolute bottom-0 left-0 right-0 p-6 z-10">
+          <div class="section-label mb-1">Combat Sports</div>
+          <h3 class="font-headline font-bold text-white text-xl uppercase">Mika Kovach</h3>
+          <p class="font-body text-xs text-white/35 uppercase tracking-widest">Combat Coach</p>
+        </div>
+      </div>
+
+      <div class="trainer-card gsap-reveal-up" style="--delay:0.2s;">
+        <div class="aspect-[3/4] overflow-hidden"><img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=700&q=80" alt="Vera Solis"></div>
+        <div class="trainer-overlay"></div>
+        <div class="t-socials">
+          <div class="w-8 h-8 flex items-center justify-center cursor-pointer" style="background:#1F1F1F;" onmouseover="this.style.background='#FF5540'" onmouseout="this.style.background='#1F1F1F'">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </div>
+        </div>
+        <div class="absolute bottom-0 left-0 right-0 p-6 z-10">
+          <div class="section-label mb-1">Conditioning</div>
+          <h3 class="font-headline font-bold text-white text-xl uppercase">Vera Solis</h3>
+          <p class="font-body text-xs text-white/35 uppercase tracking-widest">HIIT Specialist</p>
+        </div>
+      </div>
+
+      <div class="trainer-card gsap-reveal-up" style="--delay:0.3s;">
+        <div class="aspect-[3/4] overflow-hidden"><img src="https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=700&q=80" alt="Dan Ferro"></div>
+        <div class="trainer-overlay"></div>
+        <div class="t-socials">
+          <div class="w-8 h-8 flex items-center justify-center cursor-pointer" style="background:#1F1F1F;" onmouseover="this.style.background='#FF5540'" onmouseout="this.style.background='#1F1F1F'">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </div>
+        </div>
+        <div class="absolute bottom-0 left-0 right-0 p-6 z-10">
+          <div class="section-label mb-1">S&amp;C</div>
+          <h3 class="font-headline font-bold text-white text-xl uppercase">Dan Ferro</h3>
+          <p class="font-body text-xs text-white/35 uppercase tracking-widest">Performance Coach</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SCHEDULE ═══ -->
+<section id="schedule" class="py-32 px-8 md:px-12" style="background:#131313;">
+  <div class="max-w-screen-2xl mx-auto">
+
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-14 gap-6 gsap-reveal-up">
+      <div>
+        <div class="section-label mb-4">04 — Weekly Schedule</div>
+        <h2 class="font-headline font-black uppercase text-white" style="font-size:clamp(3rem,6vw,5.5rem);letter-spacing:-0.04em;line-height:0.88;">THIS WEEK<br>AT GOLL</h2>
+      </div>
+      <!-- Live clock -->
+      <div class="flex items-center gap-3 gsap-reveal-up">
+        <div class="w-2 h-2 rounded-full" style="background:#FF5540;animation:pulse 1.5s ease-in-out infinite;"></div>
+        <span id="liveClock" class="font-headline font-bold text-white/60 text-sm tracking-widest"></span>
+        <span class="font-body text-white/25 text-xs uppercase tracking-widest">Live</span>
+      </div>
+    </div>
+
+    <!-- Day tabs -->
+    <div class="flex overflow-x-auto gap-1 mb-1" id="dayTabsNew">
+      <button class="day-tab-new font-headline font-black uppercase text-xs tracking-widest px-6 py-3 whitespace-nowrap cursor-pointer transition-all duration-250 flex flex-col items-center gap-0.5" data-day="0" style="background:#FF5540;color:#5C0000;">
+        <span>MON</span><span style="font-size:0.6rem;font-weight:400;opacity:0.7;">APR 7</span>
+      </button>
+      <button class="day-tab-new font-headline font-bold uppercase text-xs tracking-widest px-6 py-3 whitespace-nowrap cursor-pointer transition-all duration-250 flex flex-col items-center gap-0.5" data-day="1" style="background:#1B1B1B;color:rgba(255,255,255,0.35);">
+        <span>TUE</span><span style="font-size:0.6rem;font-weight:400;opacity:0.6;">APR 8</span>
+      </button>
+      <button class="day-tab-new font-headline font-bold uppercase text-xs tracking-widest px-6 py-3 whitespace-nowrap cursor-pointer transition-all duration-250 flex flex-col items-center gap-0.5" data-day="2" style="background:#1B1B1B;color:rgba(255,255,255,0.35);">
+        <span>WED</span><span style="font-size:0.6rem;font-weight:400;opacity:0.6;">APR 9</span>
+      </button>
+      <button class="day-tab-new font-headline font-bold uppercase text-xs tracking-widest px-6 py-3 whitespace-nowrap cursor-pointer transition-all duration-250 flex flex-col items-center gap-0.5" data-day="3" style="background:#1B1B1B;color:rgba(255,255,255,0.35);">
+        <span>THU</span><span style="font-size:0.6rem;font-weight:400;opacity:0.6;">APR 10</span>
+      </button>
+      <button class="day-tab-new font-headline font-bold uppercase text-xs tracking-widest px-6 py-3 whitespace-nowrap cursor-pointer transition-all duration-250 flex flex-col items-center gap-0.5" data-day="4" style="background:#1B1B1B;color:rgba(255,255,255,0.35);">
+        <span>FRI</span><span style="font-size:0.6rem;font-weight:400;opacity:0.6;">APR 11</span>
+      </button>
+      <button class="day-tab-new font-headline font-bold uppercase text-xs tracking-widest px-6 py-3 whitespace-nowrap cursor-pointer transition-all duration-250 flex flex-col items-center gap-0.5" data-day="5" style="background:#1B1B1B;color:rgba(255,255,255,0.35);">
+        <span>SAT</span><span style="font-size:0.6rem;font-weight:400;opacity:0.6;">APR 12</span>
+      </button>
+    </div>
+
+    <!-- Schedule grid -->
+    <div id="scheduleGrid" style="background:#1B1B1B;">
+      <!-- header row -->
+      <div class="grid px-6 py-3" style="grid-template-columns:90px 1fr 140px 180px 120px;background:#252525;gap:1rem;">
+        <div class="font-body text-xs uppercase tracking-widest text-white/25">Time</div>
+        <div class="font-body text-xs uppercase tracking-widest text-white/25">Class</div>
+        <div class="font-body text-xs uppercase tracking-widest text-white/25">Coach</div>
+        <div class="font-body text-xs uppercase tracking-widest text-white/25">Spots</div>
+        <div></div>
+      </div>
+      <!-- rows rendered by JS -->
+      <div id="scheduleRows"></div>
+    </div>
+
+    <!-- Legend -->
+    <div class="flex flex-wrap gap-6 mt-6">
+      <div class="flex items-center gap-2"><div style="width:10px;height:10px;background:#FF5540;flex-shrink:0;"></div><span class="font-body text-white/35 text-xs uppercase tracking-widest">Powerlifting</span></div>
+      <div class="flex items-center gap-2"><div style="width:10px;height:10px;background:#3B82F6;flex-shrink:0;"></div><span class="font-body text-white/35 text-xs uppercase tracking-widest">Hybrid Combat</span></div>
+      <div class="flex items-center gap-2"><div style="width:10px;height:10px;background:#F59E0B;flex-shrink:0;"></div><span class="font-body text-white/35 text-xs uppercase tracking-widest">Engine Room</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ PRICING ═══ -->
+<section id="pricing" class="py-32 px-8 md:px-12" style="background:#1B1B1B;">
+  <div class="max-w-screen-2xl mx-auto">
+    <div class="mb-20">
+      <div class="section-label mb-4 gsap-reveal-up">05 — Membership</div>
+      <div class="flex flex-col md:flex-row justify-between items-end gap-8">
+        <h2 class="font-headline font-black uppercase text-white gsap-reveal-left" style="font-size:clamp(3rem,6vw,5.5rem);letter-spacing:-0.04em;line-height:0.88;">CHOOSE<br>YOUR<br>LEVEL</h2>
+        <p class="font-body text-white/45 text-lg max-w-xs leading-relaxed gsap-reveal-right">No contracts. No hidden fees. Just pure performance.</p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-1">
+
+      <div class="price-card p-10 gsap-reveal-up">
+        <div class="font-body text-xs uppercase tracking-[0.4em] text-white/25 mb-6">Starter</div>
+        <div class="flex items-start mb-2"><span class="font-headline font-bold text-white text-2xl mt-4">$</span><span class="font-headline font-black text-white" style="font-size:5.5rem;line-height:1;letter-spacing:-0.04em;">49</span></div>
+        <div class="font-body text-xs uppercase tracking-widest text-white/25 mb-6">per month</div>
+        <h3 class="font-headline font-black uppercase text-white text-2xl mb-6">Warrior</h3>
+        <div class="space-y-3 mb-10">
+          <div class="flex items-center gap-3"><div style="width:5px;height:5px;background:#FF5540;flex-shrink:0;"></div><span class="font-body text-white/55 text-sm">Full gym access</span></div>
+          <div class="flex items-center gap-3"><div style="width:5px;height:5px;background:#FF5540;flex-shrink:0;"></div><span class="font-body text-white/55 text-sm">8 group classes/month</span></div>
+          <div class="flex items-center gap-3"><div style="width:5px;height:5px;background:#FF5540;flex-shrink:0;"></div><span class="font-body text-white/55 text-sm">Locker room access</span></div>
+          <div class="flex items-center gap-3"><div style="width:5px;height:5px;background:#353535;flex-shrink:0;"></div><span class="font-body text-white/25 text-sm">Personal training</span></div>
+          <div class="flex items-center gap-3"><div style="width:5px;height:5px;background:#353535;flex-shrink:0;"></div><span class="font-body text-white/25 text-sm">Nutrition consultation</span></div>
+        </div>
+        <button class="btn-secondary w-full py-4 text-sm" onclick="openModal('Warrior')">GET STARTED</button>
+      </div>
+
+      <div class="price-card feat p-10 relative gsap-reveal-up" style="--delay:0.12s;">
+        <div class="absolute -top-4 left-10 kinetic-gradient px-4 py-1.5"><span class="font-headline font-black text-xs uppercase tracking-widest" style="color:#5C0000;">Most Popular</span></div>
+        <div class="font-body text-xs uppercase tracking-[0.4em] mb-6" style="color:#FF5540;">Elite</div>
+        <div class="flex items-start mb-2"><span class="font-headline font-bold text-white text-2xl mt-4">$</span><span class="font-headline font-black text-white" style="font-size:5.5rem;line-height:1;letter-spacing:-0.04em;">99</span></div>
+        <div class="font-body text-xs uppercase tracking-widest text-white/25 mb-6">per month</div>
+        <h3 class="font-headline font-black uppercase text-white text-2xl mb-6">Champion</h3>
+        <div class="space-y-3 mb-10">
+          <div class="flex items-center gap-3"><div style="width:5px;height:5px;background:#FF5540;flex-shrink:0;"></div><span class="font-body text-white/55 text-sm">Unlimited gym access</span></div>
+          <div class="flex items-center gap-3"><div style="width:5px;height:5px;background:#FF5540;flex-shrink:0;"></div><span class="font-body text-white/55 text-sm">Unlimited group classes</span></div>
+          <div class="flex items-center gap-3"><div style="width:5px;height:5px;background:#FF5540;flex-shrink:0;"></div><span class="font-body text-white/55 text-sm">2 personal sessions/month</span></div>
+          <div class="flex items-center gap-3"><div style="width:5px;height:5px;background:#FF5540;flex-shrink:0;"></div><span class="font-body text-white/55 text-sm">Nutrition consultation</span></div>
+          <div class="flex items-center gap-3"><div style="width:5px;height:5px;background:#353535;flex-shrink:0;"></div><span class="font-body text-white/25 text-sm">VIP recovery lounge</span></div>
+        </div>
+        <button class="btn-primary w-full py-4 text-sm" onclick="openModal('Champion')">JOIN ELITE</button>
+      </div>
+
+      <div class="price-card p-10 gsap-reveal-up" style="--delay:0.24s;">
+        <div class="font-body text-xs uppercase tracking-[0.4em] text-white/25 mb-6">Ultimate</div>
+        <div class="flex items-start mb-2"><span class="font-headline font-bold text-white text-2xl mt-4">$</span><span class="font-headline font-black text-white" style="font-size:5.5rem;line-height:1;letter-spacing:-0.04em;">199</span></div>
+        <div class="font-body text-xs uppercase tracking-widest text-white/25 mb-6">per month</div>
+        <h3 class="font-headline font-black uppercase text-white text-2xl mb-6">Legend</h3>
+        <div class="space-y-3 mb-10">
+          <div class="flex items-center gap-3"><div style="width:5px;height:5px;background:#FF5540;flex-shrink:0;"></div><span class="font-body text-white/55 text-sm">Everything in Champion</span></div>
+          <div class="flex items-center gap-3"><div style="width:5px;height:5px;background:#FF5540;flex-shrink:0;"></div><span class="font-body text-white/55 text-sm">8 personal sessions/month</span></div>
+          <div class="flex items-center gap-3"><div style="width:5px;height:5px;background:#FF5540;flex-shrink:0;"></div><span class="font-body text-white/55 text-sm">VIP recovery lounge</span></div>
+          <div class="flex items-center gap-3"><div style="width:5px;height:5px;background:#FF5540;flex-shrink:0;"></div><span class="font-body text-white/55 text-sm">Custom meal planning</span></div>
+          <div class="flex items-center gap-3"><div style="width:5px;height:5px;background:#FF5540;flex-shrink:0;"></div><span class="font-body text-white/55 text-sm">Priority class booking</span></div>
+        </div>
+        <button class="btn-secondary w-full py-4 text-sm" onclick="openModal('Legend')">GO LEGEND</button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TESTIMONIALS ═══ -->
+<!-- ═══ TESTIMONIALS ═══ -->
+<section id="testimonials" class="relative overflow-hidden py-32" style="background:#0E0E0E;">
+  <div class="absolute pointer-events-none" style="top:50%;left:50%;transform:translate(-50%,-50%);width:700px;height:400px;background:radial-gradient(ellipse,rgba(255,85,64,0.07) 0%,transparent 70%);filter:blur(80px);"></div>
+
+  <div class="relative z-10 max-w-screen-2xl mx-auto px-8 md:px-12">
+
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6 gsap-reveal-up">
+      <div>
+        <div class="section-label mb-3">06 — Warriors Speak</div>
+        <h2 class="font-headline font-black uppercase text-white" style="font-size:clamp(3rem,6vw,5.5rem);letter-spacing:-0.04em;line-height:0.88;">REAL<br>RESULTS</h2>
+      </div>
+      <p class="font-body text-white/35 text-sm max-w-xs leading-relaxed">Real members. Real transformations. Unfiltered.</p>
+    </div>
+
+    <!-- Cards row -->
+    <div class="flex gap-4 overflow-x-auto pb-4" id="reviewCards" style="scrollbar-width:none;-webkit-overflow-scrolling:touch;cursor:grab;">
+
+      <!-- Card 1 -->
+      <div class="review-card flex-shrink-0 flex flex-col justify-between p-7" style="width:min(360px,85vw);background:#131313;border:1px solid #1F1F1F;transition:border-color 0.3s,transform 0.3s;">
+        <div>
+          <div class="flex items-center justify-between mb-5">
+            <div class="flex items-center gap-2">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="#FF5540"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+              <span class="font-body text-xs text-white/30 uppercase tracking-widest">Verified Member</span>
+            </div>
+            <span class="font-body text-xs text-white/20">Mar 2026</span>
+          </div>
+          <div class="flex gap-1 mb-4">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="#FF5540"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="#FF5540"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="#FF5540"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="#FF5540"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="#FF5540"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p class="font-body text-white/70 text-sm leading-relaxed mb-5">"3 months in and I've completely transformed my physique. The coaches are relentless — in the best way. GOLL GYM changed my mindset, not just my body."</p>
+          <div class="flex gap-2 flex-wrap mb-5">
+            <span class="font-body text-xs px-2.5 py-1 uppercase tracking-widest" style="background:#1B1B1B;color:#FF5540;">Powerlifting</span>
+            <span class="font-body text-xs px-2.5 py-1 uppercase tracking-widest" style="background:#1B1B1B;color:rgba(255,255,255,0.25);">3 months</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 pt-5" style="border-top:1px solid #1B1B1B;">
+          <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=80&q=80" alt="Yana" style="width:38px;height:38px;object-fit:cover;flex-shrink:0;">
+          <div>
+            <div class="font-headline font-bold text-white text-xs uppercase">Yana Kovalenko</div>
+            <div class="font-body text-xs text-white/25 uppercase tracking-widest">Kyiv · Champion Plan</div>
+          </div>
+          <div class="ml-auto w-5 h-5 flex items-center justify-center flex-shrink-0" style="background:#FF5540;">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#5C0000" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="review-card flex-shrink-0 flex flex-col justify-between p-7" style="width:min(360px,85vw);background:#131313;border:1px solid #1F1F1F;transition:border-color 0.3s,transform 0.3s;">
+        <div>
+          <div class="flex items-center justify-between mb-5">
+            <div class="flex items-center gap-2">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="#FF5540"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+              <span class="font-body text-xs text-white/30 uppercase tracking-widest">Verified Member</span>
+            </div>
+            <span class="font-body text-xs text-white/20">Feb 2026</span>
+          </div>
+          <div class="flex gap-1 mb-4">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="#FF5540"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="#FF5540"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="#FF5540"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="#FF5540"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="#FF5540"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p class="font-body text-white/70 text-sm leading-relaxed mb-5">"This isn't your average gym. The atmosphere, the community, the programming — GOLL GYM is on another level. I've never felt this strong or confident in my life."</p>
+          <div class="flex gap-2 flex-wrap mb-5">
+            <span class="font-body text-xs px-2.5 py-1 uppercase tracking-widest" style="background:#1B1B1B;color:#3B82F6;">Hybrid Combat</span>
+            <span class="font-body text-xs px-2.5 py-1 uppercase tracking-widest" style="background:#1B1B1B;color:rgba(255,255,255,0.25);">6 months</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 pt-5" style="border-top:1px solid #1B1B1B;">
+          <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&q=80" alt="Dmitro" style="width:38px;height:38px;object-fit:cover;flex-shrink:0;">
+          <div>
+            <div class="font-headline font-bold text-white text-xs uppercase">Dmitro Marchuk</div>
+            <div class="font-body text-xs text-white/25 uppercase tracking-widest">Kyiv · Champion Plan</div>
+          </div>
+          <div class="ml-auto w-5 h-5 flex items-center justify-center flex-shrink-0" style="background:#FF5540;">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#5C0000" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="review-card flex-shrink-0 flex flex-col justify-between p-7" style="width:min(360px,85vw);background:#131313;border:1px solid #1F1F1F;transition:border-color 0.3s,transform 0.3s;">
+        <div>
+          <div class="flex items-center justify-between mb-5">
+            <div class="flex items-center gap-2">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="#FF5540"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+              <span class="font-body text-xs text-white/30 uppercase tracking-widest">Verified Member</span>
+            </div>
+            <span class="font-body text-xs text-white/20">Jan 2026</span>
+          </div>
+          <div class="flex gap-1 mb-4">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="#FF5540"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="#FF5540"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="#FF5540"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="#FF5540"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="#FF5540" opacity="0.35"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p class="font-body text-white/70 text-sm leading-relaxed mb-5">"Lost 18kg and gained muscle I didn't think was possible. The Legend plan pays for itself — dedicated coach, VIP lounge, meal planning. Worth every single penny."</p>
+          <div class="flex gap-2 flex-wrap mb-5">
+            <span class="font-body text-xs px-2.5 py-1 uppercase tracking-widest" style="background:#1B1B1B;color:#F59E0B;">Engine Room</span>
+            <span class="font-body text-xs px-2.5 py-1 uppercase tracking-widest" style="background:#1B1B1B;color:rgba(255,255,255,0.25);">5 months</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 pt-5" style="border-top:1px solid #1B1B1B;">
+          <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&q=80" alt="Olena" style="width:38px;height:38px;object-fit:cover;flex-shrink:0;">
+          <div>
+            <div class="font-headline font-bold text-white text-xs uppercase">Olena Bondar</div>
+            <div class="font-body text-xs text-white/25 uppercase tracking-widest">Kyiv · Legend Plan</div>
+          </div>
+          <div class="ml-auto w-5 h-5 flex items-center justify-center flex-shrink-0" style="background:#FF5540;">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#5C0000" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="review-card flex-shrink-0 flex flex-col justify-between p-7" style="width:min(360px,85vw);background:#131313;border:1px solid #1F1F1F;transition:border-color 0.3s,transform 0.3s;">
+        <div>
+          <div class="flex items-center justify-between mb-5">
+            <div class="flex items-center gap-2">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="#FF5540"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+              <span class="font-body text-xs text-white/30 uppercase tracking-widest">Verified Member</span>
+            </div>
+            <span class="font-body text-xs text-white/20">Apr 2026</span>
+          </div>
+          <div class="flex gap-1 mb-4">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="#FF5540"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="#FF5540"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="#FF5540"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="#FF5540"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="#FF5540"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p class="font-body text-white/70 text-sm leading-relaxed mb-5">"Signed up for Warrior, upgraded to Champion after week two. Alex's morning powerlifting sessions are absolutely brutal — in the best way. Completely addicted."</p>
+          <div class="flex gap-2 flex-wrap mb-5">
+            <span class="font-body text-xs px-2.5 py-1 uppercase tracking-widest" style="background:#1B1B1B;color:#FF5540;">Powerlifting</span>
+            <span class="font-body text-xs px-2.5 py-1 uppercase tracking-widest" style="background:#1B1B1B;color:rgba(255,255,255,0.25);">1 month</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 pt-5" style="border-top:1px solid #1B1B1B;">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&q=80" alt="Ivan" style="width:38px;height:38px;object-fit:cover;flex-shrink:0;">
+          <div>
+            <div class="font-headline font-bold text-white text-xs uppercase">Ivan Petrenko</div>
+            <div class="font-body text-xs text-white/25 uppercase tracking-widest">Kyiv · Champion Plan</div>
+          </div>
+          <div class="ml-auto w-5 h-5 flex items-center justify-center flex-shrink-0" style="background:#FF5540;">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#5C0000" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Scroll progress dots -->
+    <div class="flex items-center justify-between mt-6">
+      <div class="flex gap-2" id="reviewDots">
+        <div class="rdot" style="width:24px;height:3px;background:#FF5540;transition:all 0.3s ease;"></div>
+        <div class="rdot" style="width:8px;height:3px;background:#353535;transition:all 0.3s ease;"></div>
+        <div class="rdot" style="width:8px;height:3px;background:#353535;transition:all 0.3s ease;"></div>
+        <div class="rdot" style="width:8px;height:3px;background:#353535;transition:all 0.3s ease;"></div>
+      </div>
+      <span class="font-body text-white/20 text-xs uppercase tracking-widest">Drag to explore</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section id="cta" class="relative py-48 px-8 md:px-12 overflow-hidden grid-bg" style="background:#0E0E0E;">
+  <div class="absolute pointer-events-none" style="top:0;right:0;height:100%;width:40%;background:linear-gradient(135deg,rgba(255,85,64,0.14) 0%,transparent 70%);transform:skewX(-12deg) translateX(18%);"></div>
+  <div class="absolute pointer-events-none" style="bottom:0;left:0;height:60%;width:25%;background:linear-gradient(315deg,rgba(255,180,168,0.05) 0%,transparent 65%);transform:skewX(12deg) translateX(-18%);"></div>
+
+  <div class="relative z-10 max-w-5xl mx-auto text-center">
+    <div class="section-label mb-8 gsap-reveal-up">Your Journey Starts Now</div>
+    <h2 class="font-headline font-black uppercase text-white mb-8 gsap-reveal-up" style="font-size:clamp(4.5rem,11vw,10rem);letter-spacing:-0.045em;line-height:0.83;">STOP<br><span class="kinetic-text">WAITING.</span></h2>
+    <p class="font-body text-white/45 text-xl max-w-xl mx-auto mb-14 leading-relaxed gsap-reveal-up">Your journey to peak performance starts with a single decision. Join the elite community at GOLL GYM today.</p>
+    <div class="flex flex-col sm:flex-row justify-center gap-5 mb-14 gsap-reveal-up">
+      <button class="btn-primary text-xl px-14 py-6" onclick="openModal()">GET 1ST FREE TRAINING</button>
+      <button class="btn-secondary text-xl px-14 py-6" onclick="goTo('pricing')">SEE PRICING</button>
+    </div>
+    <div class="flex flex-wrap justify-center gap-8 gsap-reveal-up">
+      <div class="flex items-center gap-2">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF5540" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        <span class="font-body text-xs uppercase tracking-widest text-white/35">No Contract</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF5540" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        <span class="font-body text-xs uppercase tracking-widest text-white/35">Cancel Anytime</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF5540" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        <span class="font-body text-xs uppercase tracking-widest text-white/35">Free First Session</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF5540" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        <span class="font-body text-xs uppercase tracking-widest text-white/35">24/7 Access</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer style="background:#0E0E0E;border-top:1px solid rgba(53,53,53,0.25);">
+  <div class="max-w-screen-2xl mx-auto px-8 md:px-12 pt-20 pb-10">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+
+      <div>
+        <div class="font-headline text-3xl font-black italic text-white uppercase mb-4" style="letter-spacing:-0.04em;">GOLL<span style="color:#FF5540;">.</span>GYM</div>
+        <p class="font-body text-white/30 text-sm leading-relaxed mb-6">Kinetic Brutalism. Pure Performance. Zero Excuses.</p>
+        <div class="flex gap-3">
+          <a href="#" class="w-8 h-8 flex items-center justify-center cursor-pointer transition-colors duration-300" style="background:#1F1F1F;" onmouseover="this.style.background='#FF5540'" onmouseout="this.style.background='#1F1F1F'">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </a>
+          <a href="#" class="w-8 h-8 flex items-center justify-center cursor-pointer transition-colors duration-300" style="background:#1F1F1F;" onmouseover="this.style.background='#FF5540'" onmouseout="this.style.background='#1F1F1F'">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          <a href="#" class="w-8 h-8 flex items-center justify-center cursor-pointer transition-colors duration-300" style="background:#1F1F1F;" onmouseover="this.style.background='#FF5540'" onmouseout="this.style.background='#1F1F1F'">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.37 6.37 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.95a8.16 8.16 0 004.77 1.52V7.02a4.85 4.85 0 01-1-.33z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <div class="font-headline font-bold uppercase text-white text-sm tracking-widest mb-6">Programs</div>
+        <div class="flex flex-col gap-3">
+          <a href="#" class="font-body text-white/30 text-sm hover:text-white transition-colors duration-300">Powerlifting</a>
+          <a href="#" class="font-body text-white/30 text-sm hover:text-white transition-colors duration-300">Hybrid Combat</a>
+          <a href="#" class="font-body text-white/30 text-sm hover:text-white transition-colors duration-300">Engine Room</a>
+          <a href="#" class="font-body text-white/30 text-sm hover:text-white transition-colors duration-300">Personal Training</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="font-headline font-bold uppercase text-white text-sm tracking-widest mb-6">Company</div>
+        <div class="flex flex-col gap-3">
+          <a href="#" class="font-body text-white/30 text-sm hover:text-white transition-colors duration-300">About Us</a>
+          <a href="#" class="font-body text-white/30 text-sm hover:text-white transition-colors duration-300">Our Team</a>
+          <a href="#" class="font-body text-white/30 text-sm hover:text-white transition-colors duration-300">Careers</a>
+          <a href="#" class="font-body text-white/30 text-sm hover:text-white transition-colors duration-300">Press</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="font-headline font-bold uppercase text-white text-sm tracking-widest mb-6">Newsletter</div>
+        <p class="font-body text-white/30 text-sm mb-4">Get training tips and exclusive offers.</p>
+        <div class="flex">
+          <input type="email" placeholder="your@email.com" class="flex-1 text-white text-sm px-4 py-3 outline-none font-body border-0" style="background:#1F1F1F;color:#E2E2E2;" aria-label="Email for newsletter">
+          <button class="kinetic-gradient px-5 font-headline font-black text-xs uppercase cursor-pointer hover:opacity-90 transition-opacity flex-shrink-0" style="color:#5C0000;">GO</button>
+        </div>
+        <div class="mt-6">
+          <div class="font-body text-xs uppercase tracking-widest text-white/25 mb-1">Location</div>
+          <div class="font-body text-white/45 text-sm">Kyiv, Ukraine</div>
+          <div class="font-body text-white/45 text-sm">Open 24/7</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="flex flex-col md:flex-row justify-between items-center gap-4 pt-8" style="border-top:1px solid rgba(53,53,53,0.25);">
+      <div class="font-body text-xs uppercase tracking-[0.3em] text-white/20">© 2026 GOLL GYM. KINETIC BRUTALISM.</div>
+      <div class="flex gap-6">
+        <a href="#" class="font-body text-xs uppercase tracking-widest text-white/20 hover:text-white/50 transition-colors">Privacy</a>
+        <a href="#" class="font-body text-xs uppercase tracking-widest text-white/20 hover:text-white/50 transition-colors">Terms</a>
+        <a href="#" class="font-body text-xs uppercase tracking-widest text-white/20 hover:text-white/50 transition-colors">Cookies</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══ SCRIPTS ═══ -->
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+// ── Helper ──
+function goTo(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth'});}
+
+// ── Cursor glow ──
+const glow = document.getElementById('glow');
+document.addEventListener('mousemove', e => {
+  glow.style.left = e.clientX + 'px';
+  glow.style.top  = e.clientY + 'px';
+});
+
+// ── Loading screen ──
+const loadFill = document.getElementById('loadFill');
+const loadTxt  = document.getElementById('loadingEl') || document.getElementById('loadTxt');
+const phases   = ['INITIALIZING','LOADING ASSETS','PREPARING ARENA','READY'];
+let pct = 0;
+const iv = setInterval(() => {
+  pct += Math.random() * 18 + 4;
+  if(pct > 100) pct = 100;
+  loadFill.style.width = pct + '%';
+  document.getElementById('loadTxt').textContent = phases[Math.min(Math.floor(pct/34), 3)];
+  if(pct >= 100){
+    clearInterval(iv);
+    setTimeout(() => {
+      gsap.to('#loading', {opacity:0, duration:0.55, ease:'power2.inOut', onComplete:() => {
+        document.getElementById('loading').style.display = 'none';
+        startAnimations();
+      }});
+    }, 380);
+  }
+}, 55);
+
+// ── Mobile menu ──
+let mOpen = false;
+document.getElementById('mBtn').addEventListener('click', () => {
+  mOpen = !mOpen;
+  const lines = document.querySelectorAll('.mline');
+  const menu  = document.getElementById('mMenu');
+  if(mOpen){
+    menu.style.maxHeight = '420px';
+    lines[0].style.transform = 'translateY(8px) rotate(45deg)';
+    lines[1].style.opacity = '0';
+    lines[2].style.transform = 'translateY(-8px) rotate(-45deg)';
+  } else { closeMMenu(); }
+});
+function closeMMenu(){
+  mOpen = false;
+  document.getElementById('mMenu').style.maxHeight = '0';
+  document.querySelectorAll('.mline').forEach((l,i) => {
+    l.style.transform = '';
+    l.style.opacity = '';
+  });
+}
+
+// ── Schedule tabs ──
+document.querySelectorAll('.day-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.day-tab').forEach(t => {
+      t.style.background = '#1F1F1F';
+      t.style.color = 'rgba(255,255,255,0.4)';
+      t.style.fontWeight = '700';
+    });
+    tab.style.background = '#FF5540';
+    tab.style.color = '#5C0000';
+    tab.style.fontWeight = '900';
+  });
+});
+
+// ── All animations ──
+function startAnimations(){
+
+  // Hero
+  gsap.set('.hero-h1', {y:90, opacity:0, clipPath:'inset(100% 0% 0% 0%)'});
+  gsap.set(['.hero-el'], {y:30, opacity:0});
+  gsap.set('.hero-vid', {x:70, opacity:0});
+
+  const heroTL = gsap.timeline({delay:0.05});
+  heroTL
+    .to('.hero-el', {opacity:1, y:0, duration:0.6, stagger:0.15, ease:'power3.out'}, 0)
+    .to('.hero-h1', {opacity:1, y:0, clipPath:'inset(0% 0% 0% 0%)', duration:1.05, ease:'power3.out'}, 0.15)
+    .to('.hero-vid', {opacity:1, x:0, duration:1.1, ease:'power3.out'}, 0.25);
+
+  // Generic scroll reveals
+  gsap.utils.toArray('.gsap-reveal-up').forEach(el => {
+    const delay = parseFloat(getComputedStyle(el).getPropertyValue('--delay')) || 0;
+    gsap.fromTo(el,
+      {opacity:0, y:55},
+      {opacity:1, y:0, duration:0.8, delay, ease:'power3.out',
+       scrollTrigger:{trigger:el, start:'top 87%', toggleActions:'play none none none'}});
+  });
+  gsap.utils.toArray('.gsap-reveal-left').forEach(el => {
+    gsap.fromTo(el,{opacity:0,x:-55},{opacity:1,x:0,duration:0.8,ease:'power3.out',
+      scrollTrigger:{trigger:el,start:'top 87%',toggleActions:'play none none none'}});
+  });
+  gsap.utils.toArray('.gsap-reveal-right').forEach(el => {
+    gsap.fromTo(el,{opacity:0,x:55},{opacity:1,x:0,duration:0.8,ease:'power3.out',
+      scrollTrigger:{trigger:el,start:'top 87%',toggleActions:'play none none none'}});
+  });
+
+  // Stat counters
+  document.querySelectorAll('.counter').forEach(el => {
+    const target = +el.dataset.target;
+    let triggered = false;
+    ScrollTrigger.create({
+      trigger: el, start: 'top 82%',
+      onEnter: () => {
+        if(triggered) return; triggered = true;
+        const obj = {val:0};
+        gsap.to(obj, {val:target, duration:2.2, ease:'power2.out',
+          onUpdate:() => { el.textContent = Math.round(obj.val); }});
+      }
+    });
+  });
+
+  // Stat items stagger
+  gsap.fromTo('.stat-el',{opacity:0,y:40},{opacity:1,y:0,duration:0.7,stagger:0.12,ease:'power3.out',
+    scrollTrigger:{trigger:'.stat-el',start:'top 85%',toggleActions:'play none none none'}});
+
+  // Parallax background text
+  gsap.utils.toArray('.parallax-bg').forEach(el => {
+    gsap.fromTo(el,{x:'6%'},{x:'-6%',
+      scrollTrigger:{trigger:el.parentElement,start:'top bottom',end:'bottom top',scrub:1.2}});
+  });
+
+  // Pricing tilt
+  document.querySelectorAll('.price-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width  - 0.5;
+      const y = (e.clientY - r.top)  / r.height - 0.5;
+      gsap.to(card,{rotateY:x*6,rotateX:-y*6,duration:0.3,ease:'power2.out',transformPerspective:900});
+    });
+    card.addEventListener('mouseleave', () => {
+      gsap.to(card,{rotateY:0,rotateX:0,duration:0.55,ease:'power3.out'});
+    });
+  });
+
+  // Floating stat card pulse
+  gsap.to('[style*="Always Open"]', {y:-6, duration:2.5, repeat:-1, yoyo:true, ease:'sine.inOut'});
+
+  // ── Scroll-driven video ──
+  const vid = document.getElementById('scrollVideo');
+  if(vid){
+    // Freeze on first frame immediately
+    vid.pause();
+    vid.currentTime = 0;
+
+    const setupScrub = () => {
+      const duration = vid.duration;
+      if(!duration || isNaN(duration)) return;
+
+      // Proxy object GSAP can animate
+      const proxy = { t: 0 };
+
+      gsap.to(proxy, {
+        t: duration,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '#hero',
+          start: 'top top',
+          end: '+=120%',       // full animation plays over 1.2x viewport scrolled
+          scrub: 0.6,          // slight lag for organic feel
+          onUpdate: (self) => {
+            // clamp to valid range
+            const target = Math.max(0, Math.min(duration, duration * self.progress));
+            vid.currentTime = target;
+          },
+        },
+      });
+    };
+
+    if(vid.readyState >= 1){
+      setupScrub();
+    } else {
+      vid.addEventListener('loadedmetadata', setupScrub, {once:true});
+    }
+  }
+}
+
+// ── Scroll-spy: highlight active nav link ──
+(function(){
+  // Map each nav link href to a section id
+  const sections = ['programs','trainers','schedule','pricing'];
+  const navLinks = document.querySelectorAll('.nav-link');
+  let activeId = null;
+
+  function setActive(id){
+    if(id === activeId) return;
+    activeId = id;
+    navLinks.forEach(link => {
+      const target = link.getAttribute('href').replace('#','');
+      const isActive = target === id;
+      link.classList.toggle('active', isActive);
+    });
+  }
+
+  function onScroll(){
+    const scrollY = window.scrollY + window.innerHeight * 0.35;
+    let current = null;
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if(el && el.offsetTop <= scrollY){
+        current = id;
+      }
+    });
+    // If above all sections, clear active
+    const firstSection = document.getElementById(sections[0]);
+    if(firstSection && window.scrollY + window.innerHeight * 0.35 < firstSection.offsetTop){
+      current = null;
+    }
+    setActive(current);
+  }
+
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll(); // run once on load
+})();
+
+// ── Plan data ──
+const PLANS = {
+  Warrior: {
+    label: 'Starter',
+    name: 'WARRIOR',
+    price: '$49',
+    perks: [
+      'Full gym access, all equipment',
+      '8 group classes per month',
+      'Locker room & shower access',
+      'Gym orientation session',
+    ],
+    locked: ['Personal training sessions','Nutrition consultation','VIP recovery lounge'],
+  },
+  Champion: {
+    label: 'Most Popular',
+    name: 'CHAMPION',
+    price: '$99',
+    perks: [
+      'Unlimited gym access',
+      'Unlimited group classes',
+      '2 personal training sessions/month',
+      'Nutrition consultation',
+      'Priority class booking',
+    ],
+    locked: ['VIP recovery lounge','Custom meal planning'],
+  },
+  Legend: {
+    label: 'Ultimate',
+    name: 'LEGEND',
+    price: '$199',
+    perks: [
+      'Everything in Champion',
+      '8 personal training sessions/month',
+      'VIP recovery lounge access',
+      'Custom weekly meal planning',
+      'Priority class booking',
+      'Dedicated performance coach',
+    ],
+    locked: [],
+  },
+};
+
+function renderPlanSummary(plan, animate){
+  const d = PLANS[plan];
+  const summary = document.getElementById('planSummary');
+
+  // Swap content: fade out → update → fade in
+  const doUpdate = () => {
+    document.getElementById('planLabel').textContent = d.label;
+    document.getElementById('planName').textContent  = d.name;
+    document.getElementById('planPrice').innerHTML   =
+      d.price + '<span style="-webkit-text-fill-color:rgba(255,255,255,0.3);font-family:Inter,sans-serif;font-weight:400;font-size:0.85rem;">/mo</span>';
+
+    const perksEl = document.getElementById('planPerks');
+    perksEl.innerHTML = '';
+    d.perks.forEach((p, i) => {
+      perksEl.innerHTML += `<div class="perk-row" style="display:flex;align-items:flex-start;gap:0.6rem;opacity:0;transform:translateY(8px);transition:opacity 0.25s ease ${i*0.05}s,transform 0.25s ease ${i*0.05}s;">
+        <div style="width:14px;height:14px;background:#FF5540;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+          <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#5C0000" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <span style="font-family:'Inter',sans-serif;font-size:0.8rem;color:rgba(255,255,255,0.75);line-height:1.4;">${p}</span>
+      </div>`;
+    });
+    d.locked.forEach((p, i) => {
+      perksEl.innerHTML += `<div class="perk-row" style="display:flex;align-items:flex-start;gap:0.6rem;opacity:0;transform:translateY(8px);transition:opacity 0.25s ease ${(d.perks.length+i)*0.05}s,transform 0.25s ease ${(d.perks.length+i)*0.05}s;">
+        <div style="width:14px;height:14px;background:#2A2A2A;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+          <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </div>
+        <span style="font-family:'Inter',sans-serif;font-size:0.8rem;color:rgba(255,255,255,0.3);line-height:1.4;text-decoration:line-through;">${p}</span>
+      </div>`;
+    });
+
+    // Animate header section
+    const header = summary.querySelector('#planLabel').parentElement ||
+                   document.getElementById('planLabel').closest('div') ||
+                   document.getElementById('planLabel');
+    if(animate){
+      gsap.fromTo([
+        document.getElementById('planLabel'),
+        document.getElementById('planName'),
+        document.getElementById('planPrice'),
+      ], {opacity:0, y:10}, {opacity:1, y:0, duration:0.3, stagger:0.06, ease:'power2.out'});
+    }
+
+    // Stagger perk rows in
+    requestAnimationFrame(() => {
+      document.querySelectorAll('.perk-row').forEach(row => {
+        row.style.opacity = '1';
+        row.style.transform = 'translateY(0)';
+      });
+    });
+
+    // Update border accent colour
+    summary.style.borderLeftColor = '#FF5540';
+  };
+
+  if(animate){
+    // Fade out perks, then update
+    const perksEl = document.getElementById('planPerks');
+    gsap.to(perksEl, {opacity:0, y:-8, duration:0.18, ease:'power2.in', onComplete:() => {
+      doUpdate();
+      gsap.fromTo(perksEl, {opacity:0, y:8}, {opacity:1, y:0, duration:0.25, ease:'power2.out'});
+    }});
+  } else {
+    doUpdate();
+  }
+}
+
+function selectPlan(plan, animate){
+  document.querySelectorAll('.plan-btn').forEach(b => {
+    const active = b.dataset.plan === plan;
+    b.style.background = active ? '#FF5540' : '#1F1F1F';
+    b.style.color      = active ? '#5C0000' : 'rgba(255,255,255,0.5)';
+    b.style.border     = active ? 'none'    : '2px solid #353535';
+  });
+  document.getElementById('jPlan').value = plan;
+  renderPlanSummary(plan, animate);
+}
+
+// Plan picker click — animate on switch
+document.querySelectorAll('.plan-btn').forEach(btn => {
+  btn.addEventListener('click', () => selectPlan(btn.dataset.plan, true));
+});
+
+// ── Join Modal open/close ──
+function openModal(plan){
+  const modal = document.getElementById('joinModal');
+  const scrim = document.getElementById('modalScrim');
+  const panel = document.getElementById('modalPanel');
+  document.getElementById('joinForm').style.display = '';
+  document.getElementById('joinSuccess').style.display = 'none';
+  document.getElementById('joinSubmitBtn').textContent = 'CLAIM FREE SESSION';
+  document.getElementById('joinSubmitBtn').disabled = false;
+  document.querySelectorAll('.field-err').forEach(e => e.style.display='none');
+  selectPlan(plan || 'Warrior', false);
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  scrim.style.background = 'rgba(0,0,0,0.75)';
+  scrim.style.backdropFilter = 'blur(6px)';
+  scrim.style.webkitBackdropFilter = 'blur(6px)';
+  gsap.fromTo(panel, {opacity:0, y:48, scale:0.96}, {opacity:1, y:0, scale:1, duration:0.45, ease:'power3.out'});
+}
+
+function closeModal(){
+  const panel = document.getElementById('modalPanel');
+  const scrim = document.getElementById('modalScrim');
+  gsap.to(panel, {opacity:0, y:30, duration:0.28, ease:'power2.in', onComplete:() => {
+    document.getElementById('joinModal').style.display = 'none';
+    scrim.style.background = 'rgba(0,0,0,0)';
+    scrim.style.backdropFilter = 'blur(0px)';
+    scrim.style.webkitBackdropFilter = 'blur(0px)';
+    document.body.style.overflow = '';
+  }});
+}
+
+// Form submit
+function submitJoin(e){
+  e.preventDefault();
+  const name  = document.getElementById('jName');
+  const email = document.getElementById('jEmail');
+  document.querySelectorAll('.field-err').forEach(el => el.style.display='none');
+  let valid = true;
+  if(!name.value.trim()){
+    name.nextElementSibling.style.display='block';
+    gsap.fromTo(name,{x:-7},{x:0,duration:0.35,ease:'elastic.out(1,0.4)'});
+    valid=false;
+  }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())){
+    email.nextElementSibling.style.display='block';
+    gsap.fromTo(email,{x:-7},{x:0,duration:0.35,ease:'elastic.out(1,0.4)'});
+    valid=false;
+  }
+  if(!valid) return;
+  const btn = document.getElementById('joinSubmitBtn');
+  btn.textContent='SENDING…'; btn.disabled=true;
+  setTimeout(()=>{
+    document.getElementById('joinForm').style.display='none';
+    const s=document.getElementById('joinSuccess');
+    s.style.display='block';
+    gsap.fromTo(s,{opacity:0,y:18},{opacity:1,y:0,duration:0.45,ease:'power3.out'});
+  }, 900);
+}
+
+// Close on Escape
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
+
+// ── Live clock ──
+(function(){
+  const el = document.getElementById('liveClock');
+  if(!el) return;
+  function tick(){
+    const now = new Date();
+    el.textContent = now.toLocaleTimeString('uk-UA',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  }
+  tick(); setInterval(tick, 1000);
+})();
+
+// ── Schedule data & rendering ──
+(function(){
+  const TYPE_COLORS = {
+    'Powerlifting': '#FF5540',
+    'Hybrid Combat': '#3B82F6',
+    'Engine Room': '#F59E0B',
+  };
+
+  const DAYS = [
+    // MON
+    [
+      {time:'06:00',duration:'60 min',name:'Morning Power',type:'Powerlifting',coach:'Alex Rowe',total:12,booked:8},
+      {time:'09:00',duration:'45 min',name:'Combat Circuit',type:'Hybrid Combat',coach:'Mika Kovach',total:16,booked:12},
+      {time:'12:00',duration:'45 min',name:'Midday Engine',type:'Engine Room',coach:'Vera Solis',total:14,booked:14},
+      {time:'17:00',duration:'60 min',name:'Evening Strength',type:'Powerlifting',coach:'Dan Ferro',total:12,booked:3},
+      {time:'19:30',duration:'60 min',name:'Night Warriors',type:'Hybrid Combat',coach:'Alex Rowe',total:14,booked:5},
+    ],
+    // TUE
+    [
+      {time:'07:00',duration:'60 min',name:'Power Foundations',type:'Powerlifting',coach:'Dan Ferro',total:12,booked:6},
+      {time:'10:00',duration:'45 min',name:'HIIT Burn',type:'Engine Room',coach:'Vera Solis',total:14,booked:10},
+      {time:'13:00',duration:'45 min',name:'Kickboxing Basics',type:'Hybrid Combat',coach:'Mika Kovach',total:16,booked:9},
+      {time:'18:00',duration:'60 min',name:'Deadlift Club',type:'Powerlifting',coach:'Alex Rowe',total:10,booked:10},
+      {time:'20:00',duration:'45 min',name:'Late Night Burn',type:'Engine Room',coach:'Vera Solis',total:14,booked:4},
+    ],
+    // WED
+    [
+      {time:'06:00',duration:'60 min',name:'Squat & Press',type:'Powerlifting',coach:'Alex Rowe',total:12,booked:7},
+      {time:'09:30',duration:'45 min',name:'Combat Flow',type:'Hybrid Combat',coach:'Mika Kovach',total:16,booked:16},
+      {time:'12:00',duration:'45 min',name:'Metabolic Storm',type:'Engine Room',coach:'Vera Solis',total:14,booked:11},
+      {time:'17:30',duration:'60 min',name:'Olympic Lifts',type:'Powerlifting',coach:'Dan Ferro',total:8,booked:5},
+      {time:'19:00',duration:'60 min',name:'MMA Conditioning',type:'Hybrid Combat',coach:'Alex Rowe',total:14,booked:8},
+    ],
+    // THU
+    [
+      {time:'07:00',duration:'60 min',name:'Bench & Row',type:'Powerlifting',coach:'Dan Ferro',total:12,booked:4},
+      {time:'10:00',duration:'45 min',name:'Tabata Inferno',type:'Engine Room',coach:'Vera Solis',total:14,booked:14},
+      {time:'14:00',duration:'45 min',name:'Muay Thai Drills',type:'Hybrid Combat',coach:'Mika Kovach',total:16,booked:7},
+      {time:'17:00',duration:'60 min',name:'Max Strength',type:'Powerlifting',coach:'Alex Rowe',total:12,booked:9},
+      {time:'20:00',duration:'45 min',name:'Core & Burn',type:'Engine Room',coach:'Vera Solis',total:14,booked:3},
+    ],
+    // FRI
+    [
+      {time:'06:00',duration:'60 min',name:'Friday Power',type:'Powerlifting',coach:'Alex Rowe',total:12,booked:11},
+      {time:'09:00',duration:'60 min',name:'Combat Sparring',type:'Hybrid Combat',coach:'Mika Kovach',total:12,booked:12},
+      {time:'12:00',duration:'45 min',name:'AMRAP Madness',type:'Engine Room',coach:'Vera Solis',total:14,booked:8},
+      {time:'17:00',duration:'60 min',name:'Weekend Prep',type:'Powerlifting',coach:'Dan Ferro',total:12,booked:6},
+      {time:'19:30',duration:'60 min',name:'Fight Night Prep',type:'Hybrid Combat',coach:'Mika Kovach',total:14,booked:13},
+    ],
+    // SAT
+    [
+      {time:'08:00',duration:'90 min',name:'Saturday Beast',type:'Powerlifting',coach:'Alex Rowe',total:14,booked:14},
+      {time:'10:30',duration:'60 min',name:'Warriors Circuit',type:'Engine Room',coach:'Vera Solis',total:16,booked:10},
+      {time:'13:00',duration:'60 min',name:'Combat Open Mat',type:'Hybrid Combat',coach:'Mika Kovach',total:16,booked:7},
+      {time:'15:30',duration:'60 min',name:'Accessory Work',type:'Powerlifting',coach:'Dan Ferro',total:12,booked:2},
+    ],
+  ];
+
+  let activeDay = 0;
+
+  // Get current hour to detect "live" class
+  function getLiveClass(classes){
+    const now = new Date();
+    const hh = now.getHours(), mm = now.getMinutes();
+    const nowMins = hh * 60 + mm;
+    return classes.findIndex(c => {
+      const [ch, cm] = c.time.split(':').map(Number);
+      const start = ch * 60 + cm;
+      const dur = parseInt(c.duration) || 60;
+      return nowMins >= start && nowMins < start + dur;
+    });
+  }
+
+  function renderRows(day, animate){
+    const container = document.getElementById('scheduleRows');
+    if(!container) return;
+    const classes = DAYS[day];
+    const liveIdx = getLiveClass(classes);
+
+    if(animate){
+      gsap.to(container, {opacity:0, y:-10, duration:0.2, ease:'power2.in', onComplete: ()=>{
+        buildRows(container, classes, liveIdx);
+        gsap.fromTo(container, {opacity:0, y:12}, {opacity:1, y:0, duration:0.35, ease:'power3.out'});
+        animateRowsIn();
+      }});
+    } else {
+      buildRows(container, classes, liveIdx);
+      animateRowsIn();
+    }
+  }
+
+  function buildRows(container, classes, liveIdx){
+    container.innerHTML = '';
+    classes.forEach((c, i) => {
+      const pct = Math.round((c.booked / c.total) * 100);
+      const isFull = c.booked >= c.total;
+      const isLive = i === liveIdx;
+      const color = TYPE_COLORS[c.type] || '#FF5540';
+      const spotsLeft = c.total - c.booked;
+
+      const row = document.createElement('div');
+      row.className = 'sch-row-new';
+      row.style.cssText = `
+        display:grid;
+        grid-template-columns:90px 1fr 140px 180px 120px;
+        gap:1rem;
+        padding:1.1rem 1.5rem;
+        align-items:center;
+        border-bottom:1px solid rgba(37,37,37,0.8);
+        transition:background 0.2s ease;
+        opacity:0;
+        transform:translateY(12px);
+        ${isLive ? 'background:rgba(255,85,64,0.06);' : ''}
+        position:relative;
+        cursor:pointer;
+      `;
+
+      row.innerHTML = `
+        ${isLive ? `<div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,#FFB4A8,#FF5540);"></div>` : ''}
+
+        <!-- Time -->
+        <div>
+          <div class="font-headline font-bold text-sm" style="color:${isLive ? '#FF5540' : 'rgba(255,255,255,0.9)'};">${c.time}</div>
+          <div class="font-body text-xs" style="color:rgba(255,255,255,0.25);margin-top:2px;">${c.duration}</div>
+        </div>
+
+        <!-- Class info -->
+        <div>
+          <div style="display:flex;align-items:center;gap:0.5rem;">
+            <div class="font-headline font-bold text-white text-sm uppercase">${c.name}</div>
+            ${isLive ? `<div style="display:flex;align-items:center;gap:4px;background:rgba(255,85,64,0.15);padding:2px 8px;"><div style="width:5px;height:5px;border-radius:50%;background:#FF5540;animation:pulse 1.2s ease-in-out infinite;"></div><span class="font-body text-xs uppercase tracking-widest" style="color:#FF5540;">Live</span></div>` : ''}
+          </div>
+          <div class="font-body text-xs uppercase tracking-widest" style="color:${color};margin-top:2px;">${c.type}</div>
+        </div>
+
+        <!-- Coach -->
+        <div class="font-body text-sm" style="color:rgba(255,255,255,0.4);">${c.coach}</div>
+
+        <!-- Spots with bar -->
+        <div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
+            ${isFull
+              ? `<span class="font-headline font-bold text-xs uppercase tracking-widest px-2 py-0.5" style="background:linear-gradient(135deg,#FFB4A8,#FF5540);color:#5C0000;">FULL</span>`
+              : `<span class="font-body text-xs" style="color:rgba(255,255,255,0.5);"><span class="font-headline font-bold text-white">${spotsLeft}</span> left</span>`
+            }
+            <span class="font-body text-xs" style="color:rgba(255,255,255,0.2);">${c.booked}/${c.total}</span>
+          </div>
+          <div style="height:2px;background:#252525;overflow:hidden;">
+            <div class="capacity-bar" data-pct="${pct}" style="height:100%;width:0%;background:${isFull ? 'linear-gradient(90deg,#FFB4A8,#FF5540)' : color};transition:width 0.8s cubic-bezier(0.25,0.46,0.45,0.94);"></div>
+          </div>
+        </div>
+
+        <!-- Book button -->
+        <div>
+          ${isFull
+            ? `<button disabled class="font-headline font-bold text-xs uppercase tracking-widest px-4 py-2 w-full" style="background:#1B1B1B;color:rgba(255,255,255,0.2);cursor:not-allowed;border:none;">FULL</button>`
+            : `<button onclick="openModal()" class="font-headline font-bold text-xs uppercase tracking-widest px-4 py-2 w-full cursor-pointer" style="background:transparent;color:rgba(255,255,255,0.5);border:1px solid #353535;transition:all 0.2s;" onmouseover="this.style.background='#FF5540';this.style.color='#5C0000';this.style.borderColor='#FF5540';" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,0.5)';this.style.borderColor='#353535';">BOOK</button>`
+          }
+        </div>
+      `;
+
+      row.addEventListener('mouseenter', () => { if(!isLive) row.style.background='rgba(255,255,255,0.02)'; });
+      row.addEventListener('mouseleave', () => { row.style.background = isLive ? 'rgba(255,85,64,0.06)' : ''; });
+
+      container.appendChild(row);
+    });
+  }
+
+  function animateRowsIn(){
+    setTimeout(() => {
+      const rows = document.querySelectorAll('.sch-row-new');
+      rows.forEach((r, i) => {
+        setTimeout(() => {
+          r.style.opacity = '1';
+          r.style.transform = 'translateY(0)';
+          r.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+          // Animate capacity bars
+          const bar = r.querySelector('.capacity-bar');
+          if(bar) bar.style.width = bar.dataset.pct + '%';
+        }, i * 70);
+      });
+    }, 50);
+  }
+
+  // Day tab switching
+  const tabs = document.querySelectorAll('.day-tab-new');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const day = parseInt(tab.dataset.day);
+      if(day === activeDay) return;
+      activeDay = day;
+
+      tabs.forEach(t => {
+        t.style.background = '#1B1B1B';
+        t.style.color = 'rgba(255,255,255,0.35)';
+        t.style.fontWeight = '700';
+      });
+      tab.style.background = '#FF5540';
+      tab.style.color = '#5C0000';
+      tab.style.fontWeight = '900';
+
+      renderRows(day, true);
+    });
+  });
+
+  // Initial render on scroll into view
+  ScrollTrigger.create({
+    trigger: '#schedule',
+    start: 'top 80%',
+    onEnter: () => renderRows(activeDay, false),
+    once: true,
+  });
+
+})();
+
+// ── Review cards: drag scroll + scroll-reveal ──
+(function(){
+  const track = document.getElementById('reviewCards');
+  if(!track) return;
+
+  // Drag to scroll
+  let isDown = false, startX, scrollLeft;
+  track.addEventListener('mousedown', e => {
+    isDown = true; track.style.cursor = 'grabbing';
+    startX = e.pageX - track.offsetLeft; scrollLeft = track.scrollLeft;
+  });
+  track.addEventListener('mouseleave', () => { isDown = false; track.style.cursor = 'grab'; });
+  track.addEventListener('mouseup', () => { isDown = false; track.style.cursor = 'grab'; });
+  track.addEventListener('mousemove', e => {
+    if(!isDown) return; e.preventDefault();
+    const x = e.pageX - track.offsetLeft;
+    track.scrollLeft = scrollLeft - (x - startX);
+    // Update dots
+    updateDots();
+  });
+  track.addEventListener('scroll', updateDots, {passive:true});
+
+  function updateDots(){
+    const dots = document.querySelectorAll('.rdot');
+    if(!dots.length) return;
+    const pct = track.scrollLeft / (track.scrollWidth - track.clientWidth);
+    const active = Math.round(pct * (dots.length - 1));
+    dots.forEach((d, i) => {
+      d.style.width  = i === active ? '24px' : '8px';
+      d.style.background = i === active ? '#FF5540' : '#353535';
+    });
+  }
+
+  // Hover lift
+  document.querySelectorAll('.review-card').forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      card.style.borderColor = '#FF5540';
+      card.style.transform = 'translateY(-4px)';
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.borderColor = '#1F1F1F';
+      card.style.transform = 'translateY(0)';
+    });
+  });
+
+  // Scroll-triggered card entrance
+  ScrollTrigger.create({
+    trigger: '#testimonials',
+    start: 'top 80%',
+    onEnter: () => {
+      gsap.fromTo('.review-card',
+        {opacity:0, y:40, scale:0.96},
+        {opacity:1, y:0, scale:1, duration:0.6, stagger:0.12, ease:'power3.out'}
+      );
+      gsap.fromTo('#testimonials .gsap-reveal-up',
+        {opacity:0, y:40},
+        {opacity:1, y:0, duration:0.7, stagger:0.1, ease:'power3.out'}
+      );
+    },
+    once: true,
+  });
+})();
+
+// ── Smooth anchor nav ──
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if(t){ e.preventDefault(); t.scrollIntoView({behavior:'smooth'}); }
+  });
+});
+</script>
+</body>
+</html>
